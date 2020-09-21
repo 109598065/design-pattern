@@ -9,7 +9,7 @@ class Ellipse : public Shape {
 public:
     Ellipse(double semiMajorAxes, double semiMinorAxes) {
         if (semiMajorAxes <= 0 || semiMinorAxes <= 0) {
-            throw std::string ("This is not a ellipse!");
+            throw std::string("This is not a ellipse!");
         }
         _semiMajorAxes = semiMajorAxes;
         _semiMinorAxes = semiMinorAxes;

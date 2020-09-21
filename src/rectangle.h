@@ -8,7 +8,7 @@ class Rectangle : public Shape {
 public:
     Rectangle(double length, double width) {
         if (length <= 0 || width <= 0) {
-            throw std::string ("This is not a rectangle!");
+            throw std::string("This is not a rectangle!");
         }
         _length = length;
         _width = width;
