@@ -28,48 +28,48 @@ protected:
 };
 
 TEST_F(ShapeSort, AscendingByAreaViaFuntion) {
-    Shape *shapes[3] = {rectangle, ellipse, triangle};
-    quickSort(shapes, shapes + 2, areaAscendingCompare);
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), areaAscendingCompare);
     ASSERT_EQ(6, shapes[0]->area());
     ASSERT_EQ(12, shapes[1]->area());
     ASSERT_DOUBLE_EQ(18.849555921538759, shapes[2]->area());
 }
 
 TEST_F(ShapeSort, DescendingByAreaViaFuntion) {
-    Shape *shapes[3] = {rectangle, ellipse, triangle};
-    quickSort(shapes, shapes + 2, areaDescendingCompare);
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), areaDescendingCompare);
     ASSERT_DOUBLE_EQ(18.849555921538759, shapes[0]->area());
     ASSERT_EQ(12, shapes[1]->area());
     ASSERT_EQ(6, shapes[2]->area());
 }
 
 TEST_F(ShapeSort, AscendingByAreaViaLambdaExpressions) {
-    Shape *shapes[3] = {rectangle, ellipse, triangle};
-    quickSort(shapes, shapes + 2, [](Shape *a, Shape *b) { return a->area() < b->area(); });
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), [](Shape *a, Shape *b) { return a->area() < b->area(); });
     ASSERT_EQ(6, shapes[0]->area());
     ASSERT_EQ(12, shapes[1]->area());
     ASSERT_DOUBLE_EQ(18.849555921538759, shapes[2]->area());
 }
 
 TEST_F(ShapeSort, DescendingByAreaViaLambdaExpressions) {
-    Shape *shapes[3] = {rectangle, ellipse, triangle};
-    quickSort(shapes, shapes + 2, [](Shape *a, Shape *b) { return a->area() > b->area(); });
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), [](Shape *a, Shape *b) { return a->area() > b->area(); });
     ASSERT_DOUBLE_EQ(18.849555921538759, shapes[0]->area());
     ASSERT_EQ(12, shapes[1]->area());
     ASSERT_EQ(6, shapes[2]->area());
 }
 
 TEST_F(ShapeSort, AscendingByAreaViaObject) {
-    Shape *shapes[3] = {rectangle, ellipse, triangle};
-    quickSort(shapes, shapes + 2, AscendingCompare("area"));
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), AscendingCompare("area"));
     ASSERT_EQ(6, shapes[0]->area());
     ASSERT_EQ(12, shapes[1]->area());
     ASSERT_EQ(18.849555921538759, shapes[2]->area());
 }
 
 TEST_F(ShapeSort, DescendingByAreaViaObject) {
-    Shape *shapes[3] = {rectangle, ellipse, triangle};
-    quickSort(shapes, shapes + 2, DescendingCompare("area"));
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), DescendingCompare("area"));
     ASSERT_DOUBLE_EQ(18.849555921538759, shapes[0]->area());
     ASSERT_EQ(12, shapes[1]->area());
     ASSERT_EQ(6, shapes[2]->area());

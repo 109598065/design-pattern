@@ -7,22 +7,21 @@ template<class RandomAccessIterator, class Compare>
 void quickSort(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
     if (first < last) {
         RandomAccessIterator p = _partition(first, last, comp);
-        quickSort(first, p - 1, comp);
+        quickSort(first, p, comp);
         quickSort(p + 1, last, comp);
     }
 }
 
 template<class RandomAccessIterator, class Compare>
 RandomAccessIterator _partition(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
-    auto pivot = *last;
-    RandomAccessIterator i = first;
-    for (RandomAccessIterator j = first; j < last; j++) {
-        if (comp(*j, pivot)) {
-            std::swap(*i, *j);
-            i = i + 1;
+    auto pivot = last - 1;
+    auto i = first;
+    for (auto j = first; j != pivot; ++j) {
+        if (comp(*j, *pivot)) {
+            std::swap(*i++, *j);
         }
     }
-    std::swap(*i, *last);
+    std::swap(*i, *pivot);
     return i;
 }
 
