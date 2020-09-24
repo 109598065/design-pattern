@@ -1,15 +1,15 @@
-#ifndef ELLIPSE
-#define ELLIPSE
+#ifndef ELLIPSE_H
+#define ELLIPSE_H
 
 #include <math.h>
 #include <stdexcept>
-#include "shape.h"
+#include "./shape.h"
 
 class Ellipse : public Shape {
 public:
     Ellipse(double semiMajorAxes, double semiMinorAxes) {
-        if (semiMajorAxes <= 0 || semiMinorAxes <= 0) {
-            throw std::string("This is not a ellipse!");
+        if (semiMajorAxes <= 0 || semiMinorAxes <= 0 || semiMajorAxes < semiMinorAxes) {
+            throw std::string("This is not an ellipse!");
         }
         _semiMajorAxes = semiMajorAxes;
         _semiMinorAxes = semiMinorAxes;

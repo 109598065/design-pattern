@@ -1,9 +1,9 @@
-#ifndef TRIANGLE
-#define TRIANGLE
+#ifndef TRIANGLE_H
+#define TRIANGLE_H
 
 #include <math.h>
-#include "shape.h"
-#include "two_dimensional_coordinate.h"
+#include "./shape.h"
+#include "./two_dimensional_coordinate.h"
 
 class Triangle : public Shape {
 public:
