@@ -6,14 +6,14 @@
 template<class RandomAccessIterator, class Compare>
 void quickSort(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
     if (first < last) {
-        RandomAccessIterator p = partition(first, last, comp);
+        RandomAccessIterator p = _partition(first, last, comp);
         quickSort(first, p - 1, comp);
         quickSort(p + 1, last, comp);
     }
 }
 
 template<class RandomAccessIterator, class Compare>
-RandomAccessIterator partition(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
+RandomAccessIterator _partition(RandomAccessIterator first, RandomAccessIterator last, Compare comp) {
     auto pivot = *last;
     RandomAccessIterator i = first;
     for (RandomAccessIterator j = first; j < last; j++) {
