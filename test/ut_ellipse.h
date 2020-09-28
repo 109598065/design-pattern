@@ -32,7 +32,7 @@ TEST(Ellipse, ExceptionForSemiMinorAxesIsNotInRange) {
     }
 }
 
-TEST(Ellipse, ExceptionForSemiMinorAxesIsBigger) {
+TEST(Ellipse, ExceptionForSemiMinorAxesIsBiggerThanSemiMajorAxes) {
     try {
         Ellipse(4, 8);
         FAIL();

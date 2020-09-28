@@ -74,3 +74,51 @@ TEST_F(ShapeSort, DescendingByAreaViaObject) {
     ASSERT_EQ(12, shapes[1]->area());
     ASSERT_EQ(6, shapes[2]->area());
 }
+
+TEST_F(ShapeSort, AscendingByPerimeterViaFuntion) {
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), perimeterAscendingCompare);
+    ASSERT_EQ(12, shapes[0]->perimeter());
+    ASSERT_EQ(14, shapes[1]->perimeter());
+    ASSERT_DOUBLE_EQ(16.566370614359172, shapes[2]->perimeter());
+}
+
+TEST_F(ShapeSort, DescendingByPerimeterViaFuntion) {
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), perimeterDescendingCompare);
+    ASSERT_EQ(16.566370614359172, shapes[0]->perimeter());
+    ASSERT_EQ(14, shapes[1]->perimeter());
+    ASSERT_DOUBLE_EQ(12, shapes[2]->perimeter());
+}
+
+TEST_F(ShapeSort, AscendingByPerimeterViaLambdaExpressions) {
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), [](Shape *a, Shape *b) { return a->perimeter() < b->perimeter(); });
+    ASSERT_EQ(12, shapes[0]->perimeter());
+    ASSERT_EQ(14, shapes[1]->perimeter());
+    ASSERT_DOUBLE_EQ(16.566370614359172, shapes[2]->perimeter());
+}
+
+TEST_F(ShapeSort, DescendingByPerimeterViaLambdaExpressions) {
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), [](Shape *a, Shape *b) { return a->perimeter() > b->perimeter(); });
+    ASSERT_EQ(16.566370614359172, shapes[0]->perimeter());
+    ASSERT_EQ(14, shapes[1]->perimeter());
+    ASSERT_DOUBLE_EQ(12, shapes[2]->perimeter());
+}
+
+TEST_F(ShapeSort, AscendingByPerimeterViaObject) {
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), AscendingCompare("perimeter"));
+    ASSERT_EQ(12, shapes[0]->perimeter());
+    ASSERT_EQ(14, shapes[1]->perimeter());
+    ASSERT_DOUBLE_EQ(16.566370614359172, shapes[2]->perimeter());
+}
+
+TEST_F(ShapeSort, DescendingByPerimeterViaObject) {
+    std::array<Shape *, 3> shapes = {rectangle, ellipse, triangle};
+    quickSort(shapes.begin(), shapes.end(), DescendingCompare("perimeter"));
+    ASSERT_EQ(16.566370614359172, shapes[0]->perimeter());
+    ASSERT_EQ(14, shapes[1]->perimeter());
+    ASSERT_DOUBLE_EQ(12, shapes[2]->perimeter());
+}
