@@ -2,6 +2,7 @@
 #define TERMINAL_H
 
 #include <regex>
+#include "shape.h"
 
 class Terminal {
 public:
