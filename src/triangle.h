@@ -23,13 +23,6 @@ public:
         _vectors = vectors;
     }
 
-    bool triangleInequality() {
-        if (_side1 + _side2 > _side3 && _side2 + _side3 > _side1 && _side1 + _side3 > _side2)
-            return true;
-        else
-            return false;
-    }
-
     double area() const {
         double s = (_side1 + _side2 + _side3) / 2;
         return sqrt(s * (s - _side1) * (s - _side2) * (s - _side3));
@@ -70,6 +63,13 @@ public:
 private:
     std::vector<TwoDimensionalCoordinate *> _vectors;
     double _side1, _side2, _side3;
+
+    bool triangleInequality() const{
+        if (_side1 + _side2 > _side3 && _side2 + _side3 > _side1 && _side1 + _side3 > _side2)
+            return true;
+        else
+            return false;
+    }
 };
 
 #endif

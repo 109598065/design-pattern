@@ -8,11 +8,11 @@ public:
         _y = y;
     }
 
-    double getX() {
+    double getX() const{
         return _x;
     }
 
-    double getY() {
+    double getY() const{
         return _y;
     }
 
