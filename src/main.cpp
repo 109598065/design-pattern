@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "terminal.h"
 
 int main(int argc, char *argv[]) {
