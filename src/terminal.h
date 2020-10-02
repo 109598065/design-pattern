@@ -2,7 +2,11 @@
 #define TERMINAL_H
 
 #include <regex>
-#include "shape.h"
+#include "./rectangle.h"
+#include "./ellipse.h"
+#include "./triangle.h"
+#include "./sort.h"
+
 
 class Terminal {
 public:
