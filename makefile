@@ -9,7 +9,7 @@ ut_main: test/ut_main.cpp $(TEST) $(SRC)
 	g++ -std=c++11 -Wfatal-errors test/ut_main.cpp -o bin/ut_main -lgtest -lpthread
 
 geo: src/main.cpp
-	g++ src/main.cpp -o bin/geo -lgtest -lpthread
+	g++ -std=c++11 -Wfatal-errors src/main.cpp -o bin/geo -lgtest -lpthread
 
 dirs:
 	mkdir -p bin

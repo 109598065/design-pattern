@@ -11,13 +11,13 @@
 class Terminal {
 public:
     Terminal(std::string input) {
-        input.erase(0, input.find_first_not_of(" "));
-        input.erase(input.find_last_not_of(" ") + 1);
+        //input.erase(0, input.find_first_not_of(" "));
+        //input.erase(input.find_last_not_of(" ") + 1);
 
-        std::string temp = input;
+        /*std::string temp = input;
         std::string temp1 = get_last_word(temp);
         temp.erase(temp.find_last_of(" "));
-        std::string temp2 = get_last_word(temp);
+        std::string temp2 = get_last_word(temp);*/
 
         std::smatch m;
         std::string doubleString = "[+-]?\\d*\\.?\\d+";
@@ -34,9 +34,12 @@ public:
         shapeSearch(input, regexTriangle, 2);
 
         bool isMatch = false;
-        if ((temp2 == "area" || temp2 == "perimeter") && (temp1 == "inc" || temp1 == "dec"))
+        if (std::regex_search(input, m, std::regex("(area|perimeter) (inc|dec)")))
             isMatch = true;
 
+        /*bool isMatch = false;
+        if ((temp2 == "area" || temp2 == "perimeter") && (temp1 == "inc" || temp1 == "dec"))
+            isMatch = true;*/
 
         if (_vectors.empty() || !isMatch) {
             throw std::string("invalid input");
@@ -143,10 +146,10 @@ private:
         }
     }
 
-    std::string get_last_word(const std::string &s) {
+    /*std::string get_last_word(const std::string &s) {
         auto index = s.find_last_of(' ');
         return s.substr(++index);
-    }
+    }*/
 };
 
 #endif

@@ -23,19 +23,17 @@ public:
     }
 
     std::string info() const {
-        std::stringstream stream1;
-        stream1 << std::fixed << std::setprecision(3) << _length;
-        std::string s1 = stream1.str();
-
-        std::stringstream stream2;
-        stream2 << std::fixed << std::setprecision(3) << _width;
-        std::string s2 = stream2.str();
-
-        return "Rectangle (" + s1 + ", " + s2 + ")";
+        return "Rectangle (" + thirdDecimalPlace(_length) + ", " + thirdDecimalPlace(_width) + ")";
     }
 
 private:
     double _length, _width;
+
+    std::string thirdDecimalPlace(double value) const {
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(3) << value;
+        return stream.str();
+    }
 };
 
 #endif

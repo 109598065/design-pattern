@@ -1,25 +1,35 @@
 #include "../src/terminal.h"
 
-std::string get_last_word(const std::string &s) {
-    auto index = s.find_last_of(' ');
-    return s.substr(++index);
+TEST(Terminal, AreaIncreasing) {
+    Terminal terminal("Rectangle (3.6, 4.5) Ellipse (4.5, 3.6) Triangle ([0.0,0.0], [3.0,0.0], [0.0,4.0]) area inc");
+    ASSERT_EQ("6.000\n16.200\n50.894", terminal.showResult());
 }
 
-TEST(Terminal, Create) {
-    //Terminal terminal("Rectangle (1, 4) Rectangle (2, 105) Rectangle (0, 0) Rectangle (2, 105) perimeter dec");
-    //Terminal terminal("Ellipse (10, 1) Rectangle (1, 2)  area inc");
-    //Terminal terminal("Triangle ([0,3], [3,4], [0,4]) area inc");
-    Terminal terminal("Rectangle (3.0, 4) Ellipse (4.0, 3.0) Triangle ([0.0,0.0], [3.0,0.0], [0.0,4.0]) area inc");
-    ASSERT_EQ("6.000\n12.000\n37.699", terminal.showResult());
+TEST(Terminal, AreaDecreasing) {
+    Terminal terminal("Rectangle (3.6, 4.5) Ellipse (4.5, 3.6) Triangle ([0.0,0.0], [3.0,0.0], [0.0,4.0]) area dec");
+    ASSERT_EQ("50.894\n16.200\n6.000", terminal.showResult());
 }
 
+TEST(Terminal, PerimeterIncreasing) {
+    Terminal terminal(
+            "Rectangle (3.6, 4.5) Ellipse (4.5, 3.6) Triangle ([0.0,0.0], [3.0,0.0], [0.0,4.0]) perimeter inc");
+    ASSERT_EQ("12.000\n16.200\n26.219", terminal.showResult());
+}
 
-TEST(Terminal, PartInvalidShape) {
+TEST(Terminal, PerimeterDecreasing) {
+    Terminal terminal(
+            "Rectangle (3.6, 4.5) Ellipse (4.5, 3.6) Triangle ([0.0,0.0], [3.0,0.0], [0.0,4.0]) perimeter dec");
+    ASSERT_EQ("26.219\n16.200\n12.000", terminal.showResult());
+}
+
+TEST(Terminal, PartShapeWithWrongFormatArgument) {
     Terminal terminal("Rectangle (2, 2) Rectangle (1, 1) Ellipse$%^&(1, 1) area inc");
     ASSERT_EQ("1.000\n4.000", terminal.showResult());
+}
 
-    Terminal terminal2("Rectangle (2, 2) Rectangle (1, 1) Ellipse (-1, -1) area inc");
-    ASSERT_EQ("1.000\n4.000", terminal2.showResult());
+TEST(Terminal, PartShapeWithExcetionArgument) {
+    Terminal terminal("Rectangle (2, 2) Rectangle (1, 1) Ellipse (-1, -1) area inc");
+    ASSERT_EQ("1.000\n4.000", terminal.showResult());
 }
 
 TEST(Terminal, ExceptionForNoOrder) {
@@ -52,9 +62,9 @@ TEST(Terminal, ExceptionForNoShape) {
 
 TEST(Terminal, ExceptionForAllInvalidShape) {
     try {
-        Terminal("Rectangle (0, 0) Ellipse (-1, -1) area inc");
+        Terminal("Rectangle (0, 0) Ellipse (-1, -1) Triangle ([0,0], [0,0], [0,4]) area inc");
         FAIL();
-    }catch(std::string e) {
+    } catch (std::string e) {
         ASSERT_EQ("invalid input", e);
     }
 }

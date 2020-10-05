@@ -33,30 +33,12 @@ public:
     }
 
     std::string info() const {
-        std::stringstream stream1;
-        stream1 << std::fixed << std::setprecision(3) << _vectors.at(0)->getX();
-        std::string s1 = stream1.str();
-
-        std::stringstream stream2;
-        stream2 << std::fixed << std::setprecision(3) << _vectors.at(0)->getY();
-        std::string s2 = stream2.str();
-
-        std::stringstream stream3;
-        stream3 << std::fixed << std::setprecision(3) << _vectors.at(1)->getX();
-        std::string s3 = stream3.str();
-
-        std::stringstream stream4;
-        stream4 << std::fixed << std::setprecision(3) << _vectors.at(1)->getY();
-        std::string s4 = stream4.str();
-
-        std::stringstream stream5;
-        stream5 << std::fixed << std::setprecision(3) << _vectors.at(2)->getX();
-        std::string s5 = stream5.str();
-
-        std::stringstream stream6;
-        stream6 << std::fixed << std::setprecision(3) << _vectors.at(2)->getY();
-        std::string s6 = stream6.str();
-
+        std::string s1 = thirdDecimalPlace(_vectors.at(0)->getX());
+        std::string s2 = thirdDecimalPlace(_vectors.at(0)->getY());
+        std::string s3 = thirdDecimalPlace(_vectors.at(1)->getX());
+        std::string s4 = thirdDecimalPlace(_vectors.at(1)->getY());
+        std::string s5 = thirdDecimalPlace(_vectors.at(2)->getX());
+        std::string s6 = thirdDecimalPlace(_vectors.at(2)->getY());
         return "Triangle ([" + s1 + ", " + s2 + "], [" + s3 + ", " + s4 + "], [" + s5 + ", " + s6 + "])";
     }
 
@@ -64,11 +46,17 @@ private:
     std::vector<TwoDimensionalCoordinate *> _vectors;
     double _side1, _side2, _side3;
 
-    bool triangleInequality() const{
+    bool triangleInequality() const {
         if (_side1 + _side2 > _side3 && _side2 + _side3 > _side1 && _side1 + _side3 > _side2)
             return true;
         else
             return false;
+    }
+
+    std::string thirdDecimalPlace(double value) const {
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(3) << value;
+        return stream.str();
     }
 };
 

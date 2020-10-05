@@ -24,19 +24,17 @@ public:
     }
 
     std::string info() const {
-        std::stringstream stream1;
-        stream1 << std::fixed << std::setprecision(3) << _semiMajorAxes;
-        std::string s1 = stream1.str();
-
-        std::stringstream stream2;
-        stream2 << std::fixed << std::setprecision(3) << _semiMinorAxes;
-        std::string s2 = stream2.str();
-
-        return "Ellipse (" + s1 + ", " + s2 + ")";
+        return "Ellipse (" + thirdDecimalPlace(_semiMajorAxes) + ", " + thirdDecimalPlace(_semiMinorAxes) + ")";
     }
 
 private:
     double _semiMajorAxes, _semiMinorAxes;
+
+    std::string thirdDecimalPlace(double value) const {
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(3) << value;
+        return stream.str();
+    }
 };
 
 #endif
