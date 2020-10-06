@@ -7,81 +7,69 @@
 #include "./triangle.h"
 #include "./sort.h"
 
-
 class Terminal {
 public:
     Terminal(std::string input) {
-        //input.erase(0, input.find_first_not_of(" "));
-        //input.erase(input.find_last_not_of(" ") + 1);
-
-        /*std::string temp = input;
-        std::string temp1 = get_last_word(temp);
-        temp.erase(temp.find_last_of(" "));
-        std::string temp2 = get_last_word(temp);*/
-
-        std::smatch m;
         std::string doubleString = "[+-]?\\d*\\.?\\d+";
         std::regex regexRectangle("Rectangle +\\( *" + doubleString + " *, *" + doubleString +
-                                  " *\\) +");
+                                  " *\\)\\s+");
         std::regex regexEllipse("Ellipse +\\( *" + doubleString + " *, *" + doubleString +
-                                " *\\) +");
+                                " *\\)\\s+");
         std::regex regexTriangle(
                 "Triangle +\\( *\\[ *" + doubleString + " *, *" + doubleString + " *\\] *, *\\[ *" + doubleString +
-                "*, *" + doubleString + " *\\] *, *\\[ *" + doubleString + " *, *" + doubleString + " *\\] *\\) +");
+                "*, *" + doubleString + " *\\] *, *\\[ *" + doubleString + " *, *" + doubleString + " *\\] *\\)\\s+");
 
         shapeSearch(input, regexRectangle, 0);
         shapeSearch(input, regexEllipse, 1);
         shapeSearch(input, regexTriangle, 2);
 
+        std::smatch m;
         bool isMatch = false;
         if (std::regex_search(input, m, std::regex("(area|perimeter) (inc|dec)")))
             isMatch = true;
 
-        /*bool isMatch = false;
-        if ((temp2 == "area" || temp2 == "perimeter") && (temp1 == "inc" || temp1 == "dec"))
-            isMatch = true;*/
-
-        if (_vectors.empty() || !isMatch) {
+        if (_shapes.empty() || !isMatch) {
             throw std::string("invalid input");
         }
 
         if (std::regex_search(input, m, std::regex("area"))) {
-            isArea = true;
+            _isArea = true;
         }
         if (std::regex_search(input, m, std::regex("inc"))) {
-            isIncrement = true;
+            _isIncrement = true;
         }
 
-        if (isArea && isIncrement)
-            quickSort(_vectors.begin(), _vectors.end(), areaAscendingCompare);
-        else if (isArea && !isIncrement)
-            quickSort(_vectors.begin(), _vectors.end(), areaDescendingCompare);
-        else if (!isArea && isIncrement)
-            quickSort(_vectors.begin(), _vectors.end(), perimeterAscendingCompare);
+        if (_isArea && _isIncrement)
+            quickSort(_shapes.begin(), _shapes.end(), areaAscendingCompare);
+        else if (_isArea && !_isIncrement)
+            quickSort(_shapes.begin(), _shapes.end(), areaDescendingCompare);
+        else if (!_isArea && _isIncrement)
+            quickSort(_shapes.begin(), _shapes.end(), perimeterAscendingCompare);
         else
-            quickSort(_vectors.begin(), _vectors.end(), perimeterDescendingCompare);
+            quickSort(_shapes.begin(), _shapes.end(), perimeterDescendingCompare);
     }
 
     std::string showResult() {
         std::string result = "";
 
-        for (int i = 0; i < _vectors.size(); i++) {
+        for (int i = 0; i < _shapes.size(); i++) {
             std::stringstream stream;
-            stream << std::fixed << std::setprecision(3) << (isArea ? _vectors.at(i)->area() : _vectors.at(
+            stream << std::fixed << std::setprecision(3) << (_isArea ? _shapes.at(i)->area() : _shapes.at(
                     i)->perimeter());
             std::string s = stream.str();
 
             result += s;
-            result += i != _vectors.size() - 1 ? "\n" : "";
+            result += i != _shapes.size() - 1 ? "\n" : "";
         }
         return result;
     }
 
 private:
-    std::vector<Shape *> _vectors;
-    bool isArea = false, isIncrement = false;
+    std::vector<Shape *> _shapes;
+    std::string _feature, _order;
+    bool _isArea = false, _isIncrement = false;
 
-    void shapeSearch(std::string input, std::regex regex, int shape) {
+    void shapeSearch(std::string input, std::regex regex, int shapeType) {
         std::smatch m;
 
         while (std::regex_search(input, m, regex)) {
@@ -90,7 +78,7 @@ private:
                 std::string z = x.str();
                 std::smatch m2;
                 double a, b, c, d, e, f;
-                if (shape == 0 || shape == 1) {
+                if (shapeType == 0 || shapeType == 1) {
                     std::regex_search(z, m2, std::regex("[+-]?\\d*\\.?\\d+"));
                     a = std::atof(m2.str().data());
                     z = m2.suffix().str();
@@ -125,31 +113,26 @@ private:
                 }
 
                 try {
-                    Shape *shape1;
-                    if (shape == 0)
-                        shape1 = new Rectangle(a, b);
-                    else if (shape == 1)
-                        shape1 = new Ellipse(a, b);
+                    Shape *shape;
+                    if (shapeType == 0)
+                        shape = new Rectangle(a, b);
+                    else if (shapeType == 1)
+                        shape = new Ellipse(a, b);
                     else {
                         std::vector<TwoDimensionalCoordinate *> triangleVector;
                         triangleVector.push_back(new TwoDimensionalCoordinate(a, b));
                         triangleVector.push_back(new TwoDimensionalCoordinate(c, d));
                         triangleVector.push_back(new TwoDimensionalCoordinate(e, f));
-                        shape1 = new Triangle(triangleVector);
+                        shape = new Triangle(triangleVector);
                     }
 
-                    _vectors.push_back(shape1);
+                    _shapes.push_back(shape);
                 } catch (std::string e) {
                 }
             }
             input = m.suffix().str();
         }
     }
-
-    /*std::string get_last_word(const std::string &s) {
-        auto index = s.find_last_of(' ');
-        return s.substr(++index);
-    }*/
 };
 
 #endif

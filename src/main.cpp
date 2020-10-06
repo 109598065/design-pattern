@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
         std::ifstream file;
         file.open(inputPath);
         std::string allLine = "";
-        std::string inputLine;
+        std::string inputLine = "";
         while (std::getline(file, inputLine)) {
             allLine += inputLine + " ";
         }
