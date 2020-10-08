@@ -7,7 +7,23 @@
 
 class Triangle : public Shape {
 public:
-    Triangle(std::vector<TwoDimensionalCoordinate *> vectors) {
+    Triangle(std::string id, std::vector<TwoDimensionalCoordinate *> vectors) : Shape(id) {
+        if (vectors.size() != 3) {
+            throw std::string("This is not a triangle!");
+        }
+        _side1 = sqrt(pow(vectors.at(0)->getX() - vectors.at(1)->getX(), 2)
+                      + pow(vectors.at(0)->getY() - vectors.at(1)->getY(), 2));
+        _side2 = sqrt(pow(vectors.at(1)->getX() - vectors.at(2)->getX(), 2)
+                      + pow(vectors.at(1)->getY() - vectors.at(2)->getY(), 2));
+        _side3 = sqrt(pow(vectors.at(0)->getX() - vectors.at(2)->getX(), 2)
+                      + pow(vectors.at(0)->getY() - vectors.at(2)->getY(), 2));
+        if (!triangleInequality()) {
+            throw std::string("This is not a triangle!");
+        }
+        _vectors = vectors;
+    }
+
+    Triangle(std::string id, std::vector<TwoDimensionalCoordinate *> vectors, std::string color) : Shape(id, color) {
         if (vectors.size() != 3) {
             throw std::string("This is not a triangle!");
         }

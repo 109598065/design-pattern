@@ -6,7 +6,15 @@
 
 class Rectangle : public Shape {
 public:
-    Rectangle(double length, double width) {
+    Rectangle(std::string id, double length, double width) : Shape(id) {
+        if (length <= 0 || width <= 0) {
+            throw std::string("This is not a rectangle!");
+        }
+        _length = length;
+        _width = width;
+    }
+
+    Rectangle(std::string id, double length, double width, std::string color) : Shape(id, color) {
         if (length <= 0 || width <= 0) {
             throw std::string("This is not a rectangle!");
         }
