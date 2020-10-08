@@ -1,6 +1,6 @@
 .PHONY: dirs clean
 
-SRC = src/shape.h src/rectangle.h src/ellipse.h src/two_dimensional_coordinate.h src/triangle.h src/compound_shape.h
+SRC = src/shape.h src/rectangle.h src/ellipse.h src/two_dimensional_coordinate.h src/triangle.h src/compound_shape.h src/shape.cpp
 TEST = test/ut_rectangle.h test/ut_ellipse.h test/ut_triangle.h test/ut_compound_shape.h
 
 all: dirs ut_main
