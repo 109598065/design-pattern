@@ -72,7 +72,7 @@ TEST_F(CompoundShapeShould, ExceptionForNoShapeInVector) {
     }
 }
 
-TEST_F(CompoundShapeShould, AddShape) {
+TEST_F(CompoundShapeShould, AddNoncompoundShape) {
     Shape *compoundShape = new CompoundShape(std::string(), shapes);
     Shape *ForAdd = new Rectangle(std::string(), 2, 2);
     compoundShape->addShape(ForAdd);
@@ -81,7 +81,6 @@ TEST_F(CompoundShapeShould, AddShape) {
     ASSERT_EQ(
             "Compound Shape {Ellipse (4.000, 3.000), Rectangle (3.000, 4.000), Triangle ([0.000, 0.000], [3.000, 0.000], [0.000, 4.000]), Rectangle (2.000, 2.000)}",
             compoundShape->info());
-    delete ForAdd;
 }
 
 TEST_F(CompoundShapeShould, DeleteNonCompoundShape) {
@@ -92,7 +91,7 @@ TEST_F(CompoundShapeShould, DeleteNonCompoundShape) {
             compoundShape->info());
 }
 
-TEST_F(CompoundShapeShould, ExceptionForWishDeleteShapeNotFind) {
+TEST_F(CompoundShapeShould, ExceptionForWishedDeleteShapeNotFind) {
     try {
         Shape *compoundShape = new CompoundShape(std::string(), shapes);
         compoundShape->deleteShapeById("5");
@@ -107,13 +106,110 @@ TEST_F(CompoundShapeShould, GetNonCompoundShape) {
     ASSERT_EQ("Rectangle (3.000, 4.000)", compoundShape->getShapeById("7")->info());
 }
 
-/*TEST_F(CompoundShapeShould, AddCompoundShape) {
+TEST_F(CompoundShapeShould, ExceptionForWishedGetShapeNotFind) {
+    try {
+        Shape *compoundShape = new CompoundShape(std::string(), shapes);
+        compoundShape->getShapeById("5");
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Expected get shape but shape not found", e);
+    }
+}
+
+TEST_F(CompoundShapeShould, AddCompoundShape) {
     Shape *compoundShape = new CompoundShape("4", shapes);
 
-    Shape *compoundShapeToAdd = new CompoundShape("3", shapes);
+    std::vector<Shape *> *shapesToAdd = new std::vector<Shape *>;
+    Shape *r55 = new Rectangle(std::string(), 5, 5);
+    Shape *e66 = new Ellipse(std::string(), 6, 6);
+    shapesToAdd->push_back(r55);
+    shapesToAdd->push_back(e66);
+    Shape *compoundShapeToAdd = new CompoundShape("3", shapesToAdd);
+
     compoundShape->addShape(compoundShapeToAdd);
     ASSERT_EQ(
-            "Compound Shape {Ellipse (4.000, 3.000), Triangle ([0.000, 0.000], [3.000, 0.000], [0.000, 4.000])}",
+            "Compound Shape {Ellipse (4.000, 3.000), Rectangle (3.000, 4.000), Triangle ([0.000, 0.000], [3.000, 0.000], [0.000, 4.000]), Compound Shape {Rectangle (5.000, 5.000), Ellipse (6.000, 6.000)}}",
             compoundShape->info());
-}*/
+}
 
+TEST_F(CompoundShapeShould, DeleteCompoundShape) {
+    Shape *compoundShape = new CompoundShape("5", shapes);
+
+    std::vector<Shape *> *shapesToAdd = new std::vector<Shape *>;
+    Shape *r55 = new Rectangle(std::string(), 5, 5);
+    Shape *e66 = new Ellipse(std::string(), 6, 6);
+    shapesToAdd->push_back(r55);
+    shapesToAdd->push_back(e66);
+    Shape *compoundShapeToAdd = new CompoundShape("4", shapesToAdd);
+
+    compoundShape->addShape(compoundShapeToAdd);
+    compoundShape->deleteShapeById("4");
+
+    ASSERT_EQ(
+            "Compound Shape {Ellipse (4.000, 3.000), Rectangle (3.000, 4.000), Triangle ([0.000, 0.000], [3.000, 0.000], [0.000, 4.000])}",
+            compoundShape->info());
+}
+
+TEST_F(CompoundShapeShould, DeleteCompoundShapeWithLv3TreeStruct) {
+    Shape *compoundShape = new CompoundShape("5", shapes);
+
+    std::vector<Shape *> *shapesToAddLow = new std::vector<Shape *>;
+    Shape *r55 = new Rectangle(std::string(), 5, 5);
+    Shape *e66 = new Ellipse(std::string(), 6, 6);
+    shapesToAddLow->push_back(r55);
+    shapesToAddLow->push_back(e66);
+    Shape *compoundShapeToAddLow = new CompoundShape("4", shapesToAddLow);
+
+    std::vector<Shape *> *shapesToAddMiddle = new std::vector<Shape *>;
+    Shape *r77 = new Rectangle(std::string(), 7, 7);
+    Shape *e88 = new Ellipse(std::string(), 8, 8);
+    shapesToAddMiddle->push_back(r77);
+    shapesToAddMiddle->push_back(e88);
+    Shape *compoundShapeToAddMiddle = new CompoundShape("3", shapesToAddMiddle);
+
+    compoundShapeToAddMiddle->addShape(compoundShapeToAddLow);
+    compoundShape->addShape(compoundShapeToAddMiddle);
+    compoundShape->deleteShapeById("4");
+
+    ASSERT_EQ(
+            "Compound Shape {Ellipse (4.000, 3.000), Rectangle (3.000, 4.000), Triangle ([0.000, 0.000], [3.000, 0.000], [0.000, 4.000]), Compound Shape {Rectangle (7.000, 7.000), Ellipse (8.000, 8.000)}}",
+            compoundShape->info());
+}
+
+TEST_F(CompoundShapeShould, GetCompoundShape) {
+    Shape *compoundShape = new CompoundShape("5", shapes);
+
+    std::vector<Shape *> *shapesToAdd = new std::vector<Shape *>;
+    Shape *r55 = new Rectangle(std::string(), 5, 5);
+    Shape *e66 = new Ellipse(std::string(), 6, 6);
+    shapesToAdd->push_back(r55);
+    shapesToAdd->push_back(e66);
+    Shape *compoundShapeToAdd = new CompoundShape("4", shapesToAdd);
+
+    compoundShape->addShape(compoundShapeToAdd);
+
+    ASSERT_EQ("Compound Shape {Rectangle (5.000, 5.000), Ellipse (6.000, 6.000)}", compoundShape->getShapeById("4")->info());
+}
+
+TEST_F(CompoundShapeShould, GetCompoundShapeWithLv3TreeStruct) {
+    Shape *compoundShape = new CompoundShape("5", shapes);
+
+    std::vector<Shape *> *shapesToAddLow = new std::vector<Shape *>;
+    Shape *r55 = new Rectangle(std::string(), 5, 5);
+    Shape *e66 = new Ellipse(std::string(), 6, 6);
+    shapesToAddLow->push_back(r55);
+    shapesToAddLow->push_back(e66);
+    Shape *compoundShapeToAddLow = new CompoundShape("4", shapesToAddLow);
+
+    std::vector<Shape *> *shapesToAddMiddle = new std::vector<Shape *>;
+    Shape *r77 = new Rectangle(std::string(), 7, 7);
+    Shape *e88 = new Ellipse(std::string(), 8, 8);
+    shapesToAddMiddle->push_back(r77);
+    shapesToAddMiddle->push_back(e88);
+    Shape *compoundShapeToAddMiddle = new CompoundShape("3", shapesToAddMiddle);
+
+    compoundShapeToAddMiddle->addShape(compoundShapeToAddLow);
+    compoundShape->addShape(compoundShapeToAddMiddle);
+
+    ASSERT_EQ("Compound Shape {Rectangle (5.000, 5.000), Ellipse (6.000, 6.000)}", compoundShape->getShapeById("4")->info());
+}

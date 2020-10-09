@@ -43,6 +43,36 @@ TEST(Rectangle, ColorWithDefault) {
 }
 
 TEST(Rectangle, ColorWithCustom) {
-    Rectangle rectangle("7", 3, 4,"green");
+    Rectangle rectangle("7", 3, 4, "green");
     ASSERT_EQ("green", rectangle.color());
+}
+
+TEST(Rectangle, ExceptionForCallAddShape) {
+    try {
+        Shape* rectangle = new Rectangle(std::string(), 3, 2);
+        rectangle->addShape(nullptr);
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can add shape!", e);
+    }
+}
+
+TEST(Rectangle, ExceptionForCallDeleteShapeById) {
+    try {
+        Shape* rectangle = new Rectangle(std::string(), 3, 2);
+        rectangle->deleteShapeById(std::string());
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can delete shape!", e);
+    }
+}
+
+TEST(Rectangle, ExceptionForCallGetShapeById) {
+    try {
+        Shape* rectangle = new Rectangle(std::string(), 3, 2);
+        rectangle->getShapeById(std::string());
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can get shape!", e);
+    }
 }

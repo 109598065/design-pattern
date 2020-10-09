@@ -46,16 +46,25 @@ public:
     }
 
     void deleteShapeById(std::string id) {
-        int size = _shapes->size();
+        bool isFind = false;
 
         std::vector<Shape *>::iterator it;
         for (it = _shapes->begin(); it < _shapes->end(); it++) {
             if ((*it)->id() == id) {
                 _shapes->erase(it);
+                isFind = true;
+            }
+            if ((*it)->color() == "transparent") {
+                try {
+                    (*it)->deleteShapeById(id);
+                    isFind = true;
+                }
+                catch (std::string e) {
+                }
             }
         }
 
-        if (size == _shapes->size()) {
+        if (!isFind) {
             throw std::string("Expected delete shape but shape not found");
         }
     }
@@ -66,8 +75,15 @@ public:
             if ((*it)->id() == id) {
                 return *it;
             }
+            if ((*it)->color() == "transparent") {
+                try {
+                    return (*it)->getShapeById(id);
+                }
+                catch (std::string e) {
+                }
+            }
         }
-        throw std::string("Expected delete shape but shape not found");
+        throw std::string("Expected get shape but shape not found");
     }
 
 private:

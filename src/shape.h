@@ -28,7 +28,7 @@ public:
     }
 
     virtual void addShape(Shape *shape) {
-        throw std::string("Only compound shape can add shape!\"");
+        throw std::string("Only compound shape can add shape!");
     }
 
     virtual void deleteShapeById(std::string id) {

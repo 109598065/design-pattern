@@ -55,3 +55,33 @@ TEST(Ellipse, ColorWithCustom) {
     Ellipse ellipse("8", 4, 3,"blue");
     ASSERT_EQ("blue", ellipse.color());
 }
+
+TEST(Ellipse, ExceptionForCallAddShape) {
+    try {
+        Shape* ellipse = new Ellipse(std::string(), 3, 2);
+        ellipse->addShape(nullptr);
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can add shape!", e);
+    }
+}
+
+TEST(Ellipse, ExceptionForCallDeleteShapeById) {
+    try {
+        Shape* ellipse = new Ellipse(std::string(), 3, 2);
+        ellipse->deleteShapeById(std::string());
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can delete shape!", e);
+    }
+}
+
+TEST(Ellipse, ExceptionForCallGetShapeById) {
+    try {
+        Shape* ellipse = new Ellipse(std::string(), 3, 2);
+        ellipse->getShapeById(std::string());
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can get shape!", e);
+    }
+}

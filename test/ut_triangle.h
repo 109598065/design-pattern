@@ -73,3 +73,45 @@ TEST(Triangle, ColorWithCustom) {
     Triangle triangle("3", triangleVector,"yellow");
     ASSERT_EQ("yellow", triangle.color());
 }
+
+TEST(Triangle, ExceptionForCallAddShape) {
+    try {
+        std::vector<TwoDimensionalCoordinate *> triangleVector;
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(3, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 4));
+        Shape* triangle = new Triangle(std::string(), triangleVector);
+        triangle->addShape(nullptr);
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can add shape!", e);
+    }
+}
+
+TEST(Triangle, ExceptionForCallDeleteShapeById) {
+    try {
+        std::vector<TwoDimensionalCoordinate *> triangleVector;
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(3, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 4));
+        Shape* triangle = new Triangle(std::string(), triangleVector);
+        triangle->deleteShapeById(std::string());
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can delete shape!", e);
+    }
+}
+
+TEST(Triangle, ExceptionForCallGetShapeById) {
+    try {
+        std::vector<TwoDimensionalCoordinate *> triangleVector;
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(3, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 4));
+        Shape* triangle = new Triangle(std::string(), triangleVector);
+        triangle->getShapeById(std::string());
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can get shape!", e);
+    }
+}
