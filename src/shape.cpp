@@ -1,2 +1,20 @@
+#include "shape.h"
 
+Shape::Shape(std::string id) {
+    _id = id;
+    _color = "white";
+}
+
+Shape::Shape(std::string id, std::string color) {
+    _id = id;
+    _color = color;
+}
+
+std::string Shape::id() const {
+    return _id;
+}
+
+std::string Shape::color() const {
+    return _color;
+}
 

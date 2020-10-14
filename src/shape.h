@@ -1,17 +1,13 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
+#include <string>
+
 class Shape {
 public:
-    Shape(std::string id) {
-        _id = id;
-        _color = "white";
-    }
+    Shape(std::string id);
 
-    Shape(std::string id, std::string color) {
-        _id = id;
-        _color = color;
-    }
+    Shape(std::string id, std::string color);
 
     virtual double area() const = 0;
 
@@ -19,13 +15,9 @@ public:
 
     virtual std::string info() const = 0;
 
-    std::string id() const {
-        return _id;
-    }
+    std::string id() const;
 
-    std::string color() const {
-        return _color;
-    }
+    std::string color() const;
 
     virtual void addShape(Shape *shape) {
         throw std::string("Only compound shape can add shape!");
