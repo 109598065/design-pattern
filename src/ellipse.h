@@ -35,6 +35,11 @@ public:
         return "Ellipse (" + thirdDecimalPlace(_semiMajorAxes) + ", " + thirdDecimalPlace(_semiMinorAxes) + ")";
     }
 
+    std::string type() const {
+        return "Ellipse";
+    }
+
+
 private:
     double _semiMajorAxes, _semiMinorAxes;
 

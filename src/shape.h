@@ -2,6 +2,9 @@
 #define SHAPE_H
 
 #include <string>
+#include "iterator.h"
+#include "null_iterator.h"
+//class Iterator;
 
 class Shape {
 public:
@@ -9,27 +12,27 @@ public:
 
     Shape(std::string id, std::string color);
 
+    std::string id() const;
+
+    std::string color() const;
+
     virtual double area() const = 0;
 
     virtual double perimeter() const = 0;
 
     virtual std::string info() const = 0;
 
-    std::string id() const;
+    virtual std::string type() const = 0;
 
-    std::string color() const;
+    virtual void addShape(Shape *shape);
 
-    virtual void addShape(Shape *shape) {
-        throw std::string("Only compound shape can add shape!");
-    }
+    virtual void deleteShapeById(std::string id);
 
-    virtual void deleteShapeById(std::string id) {
-        throw std::string("Only compound shape can delete shape!");
-    }
+    virtual Shape *getShapeById(std::string id) const;
 
-    virtual Shape *getShapeById(std::string id) {
-        throw std::string("Only compound shape can get shape!");
-    }
+    virtual Iterator *createIterator() const; //todo to test
+
+    virtual ~Shape(); //todo to note
 
 private:
     std::string _id, _color;

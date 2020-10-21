@@ -115,3 +115,12 @@ TEST(Triangle, ExceptionForCallGetShapeById) {
         ASSERT_EQ("Only compound shape can get shape!", e);
     }
 }
+
+TEST(Triangle, Type) {
+    std::vector<TwoDimensionalCoordinate *> triangleVector;
+    triangleVector.push_back(new TwoDimensionalCoordinate(0, 0));
+    triangleVector.push_back(new TwoDimensionalCoordinate(3.5, 0));
+    triangleVector.push_back(new TwoDimensionalCoordinate(0, 4.5));
+    Triangle triangle("3", triangleVector,"yellow");
+    ASSERT_EQ("Triangle", triangle.type());
+}

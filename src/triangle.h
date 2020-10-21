@@ -58,6 +58,10 @@ public:
         return "Triangle ([" + s1 + ", " + s2 + "], [" + s3 + ", " + s4 + "], [" + s5 + ", " + s6 + "])";
     }
 
+    std::string type() const {
+        return "Triangle";
+    }
+
 private:
     std::vector<TwoDimensionalCoordinate *> _vectors;
     double _side1, _side2, _side3;

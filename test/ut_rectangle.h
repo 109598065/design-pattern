@@ -1,10 +1,10 @@
 #include "../src/rectangle.h"
 
 TEST(Rectangle, CreateUseInt) {
-    Rectangle rectangle(std::string(), 3, 4);
+    Rectangle rectangle(std::string(), 4, 3);
     ASSERT_EQ(12, rectangle.area());
     ASSERT_EQ(14, rectangle.perimeter());
-    ASSERT_EQ("Rectangle (3.000, 4.000)", rectangle.info());
+    ASSERT_EQ("Rectangle (4.000, 3.000)", rectangle.info());
 }
 
 TEST(Rectangle, CreateUseDouble) {
@@ -33,17 +33,17 @@ TEST(Rectangle, ExceptionForWidthIsNotInRange) {
 }
 
 TEST(Rectangle, Id) {
-    Rectangle rectangle("7", 3, 4);
+    Rectangle rectangle("7", 4, 3);
     ASSERT_EQ("7", rectangle.id());
 }
 
 TEST(Rectangle, ColorWithDefault) {
-    Rectangle rectangle("7", 3, 4);
+    Rectangle rectangle("7", 4, 3);
     ASSERT_EQ("white", rectangle.color());
 }
 
 TEST(Rectangle, ColorWithCustom) {
-    Rectangle rectangle("7", 3, 4, "green");
+    Rectangle rectangle("7", 4, 3, "green");
     ASSERT_EQ("green", rectangle.color());
 }
 
@@ -75,4 +75,9 @@ TEST(Rectangle, ExceptionForCallGetShapeById) {
     } catch (std::string e) {
         ASSERT_EQ("Only compound shape can get shape!", e);
     }
+}
+
+TEST(Rectangle, Type) {
+    Rectangle rectangle("7", 4, 3, "green");
+    ASSERT_EQ("Rectangle", rectangle.type());
 }

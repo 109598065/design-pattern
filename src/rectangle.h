@@ -34,6 +34,10 @@ public:
         return "Rectangle (" + thirdDecimalPlace(_length) + ", " + thirdDecimalPlace(_width) + ")";
     }
 
+    std::string type() const {
+        return "Rectangle";
+    }
+
 private:
     double _length, _width;
 

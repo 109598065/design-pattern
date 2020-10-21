@@ -85,3 +85,8 @@ TEST(Ellipse, ExceptionForCallGetShapeById) {
         ASSERT_EQ("Only compound shape can get shape!", e);
     }
 }
+
+TEST(Ellipse, Type) {
+    Ellipse ellipse("7", 4, 3, "green");
+    ASSERT_EQ("Ellipse", ellipse.type());
+}
