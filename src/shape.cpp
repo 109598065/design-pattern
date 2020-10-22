@@ -31,7 +31,7 @@ Shape *Shape::getShapeById(std::string id) const {
 }
 
 Iterator *Shape::createIterator() const {
-    return new NullIterator;//todo to test
+    return new NullIterator;
 }
 
 Shape::~Shape() {}

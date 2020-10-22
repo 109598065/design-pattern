@@ -94,3 +94,16 @@ TEST_F(IteratorShould, ShapeIteratorForCompoundShape) {
     it->next();
     ASSERT_TRUE(it->isDone());
 }
+
+TEST_F(IteratorShould, ExceptionForShapeIteratorNextIsEnd) {
+    try {
+        Iterator *it = compoundShape->createIterator();
+        it->next();
+        it->next();
+        it->next();
+        it->next();
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Moving past the end!", e);
+    }
+}
