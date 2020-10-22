@@ -80,7 +80,7 @@ TEST_F(CompoundShapeShould, AddNoncompoundShape) {
             compoundShape->info());
 }
 
-TEST_F(CompoundShapeShould, DeleteNonCompoundShape) {//TODO
+TEST_F(CompoundShapeShould, DeleteNonCompoundShape) {
     Shape *compoundShape = new CompoundShape(std::string(), shapes);
     compoundShape->deleteShapeById("7");
     ASSERT_EQ(

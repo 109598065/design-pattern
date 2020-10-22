@@ -25,8 +25,8 @@ public:
 
     double perimeter() const {
         double perimeter = 0.0;
-        std::list<Shape *>::const_iterator it;
-        for (it = _shapes.begin(); it != _shapes.end(); it++) {
+        std::list<Shape *>::const_iterator it = _shapes.begin();
+        for (_shapes.begin(); it != _shapes.end(); it++) {
             perimeter += (*it)->perimeter();
         }
         return perimeter;
@@ -50,7 +50,7 @@ public:
     void deleteShapeById(std::string id) {
         bool isFind = false;
 
-        std::list<Shape *>::const_iterator it;
+        std::list<Shape *>::iterator it;
         for (it = _shapes.begin(); it != _shapes.end(); it++) {
             if ((*it)->id() == id) {
                 it = _shapes.erase(it);
@@ -90,7 +90,7 @@ public:
     }
 
     Iterator *createIterator() const {
-        return new ShapeIterator<std::list<Shape *>::const_iterator>(_shapes.begin(),_shapes.end());
+        return new ShapeIterator<std::list<Shape *>::const_iterator>(_shapes.begin(), _shapes.end());
     }
 
 private:
