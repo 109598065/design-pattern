@@ -53,9 +53,9 @@ public:
         std::list<Shape *>::iterator it;
         for (it = _shapes.begin(); it != _shapes.end(); it++) {
             if ((*it)->id() == id) {
-                it = _shapes.erase(it);
-                it--;
+                _shapes.erase(it);
                 isFind = true;
+                return;
             }
             try {
                 (*it)->deleteShapeById(id);
