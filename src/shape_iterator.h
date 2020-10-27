@@ -2,7 +2,7 @@
 #define SHAPE_ITERATOR_H
 
 #include <string>
-#include "iterator.h"
+#include "./iterator.h"
 
 template<class ForwardIterator>
 class ShapeIterator : public Iterator {

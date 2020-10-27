@@ -52,13 +52,13 @@ TEST(Ellipse, ColorWithDefault) {
 }
 
 TEST(Ellipse, ColorWithCustom) {
-    Ellipse ellipse("8", 4, 3,"blue");
+    Ellipse ellipse("8", 4, 3, "blue");
     ASSERT_EQ("blue", ellipse.color());
 }
 
 TEST(Ellipse, ExceptionForCallAddShape) {
     try {
-        Shape* ellipse = new Ellipse(std::string(), 3, 2);
+        Shape *ellipse = new Ellipse(std::string(), 3, 2);
         ellipse->addShape(nullptr);
         FAIL();
     } catch (std::string e) {
@@ -68,7 +68,7 @@ TEST(Ellipse, ExceptionForCallAddShape) {
 
 TEST(Ellipse, ExceptionForCallDeleteShapeById) {
     try {
-        Shape* ellipse = new Ellipse(std::string(), 3, 2);
+        Shape *ellipse = new Ellipse(std::string(), 3, 2);
         ellipse->deleteShapeById(std::string());
         FAIL();
     } catch (std::string e) {
@@ -78,7 +78,7 @@ TEST(Ellipse, ExceptionForCallDeleteShapeById) {
 
 TEST(Ellipse, ExceptionForCallGetShapeById) {
     try {
-        Shape* ellipse = new Ellipse(std::string(), 3, 2);
+        Shape *ellipse = new Ellipse(std::string(), 3, 2);
         ellipse->getShapeById(std::string());
         FAIL();
     } catch (std::string e) {

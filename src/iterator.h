@@ -1,7 +1,6 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
-//#include "./shape.h"
 class Shape;
 
 class Iterator {

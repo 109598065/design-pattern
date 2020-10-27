@@ -2,9 +2,7 @@
 #define SHAPE_H
 
 #include <string>
-#include "iterator.h"
-#include "null_iterator.h"
-//class Iterator;
+#include "./null_iterator.h"
 
 class Shape {
 public:
@@ -30,9 +28,9 @@ public:
 
     virtual Shape *getShapeById(std::string id) const;
 
-    virtual Iterator *createIterator() const; //todo to test
+    virtual Iterator *createIterator() const;
 
-    virtual ~Shape(); //todo to note
+    virtual ~Shape();
 
 private:
     std::string _id, _color;

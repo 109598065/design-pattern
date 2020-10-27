@@ -44,8 +44,8 @@ std::deque<Shape *> filterShape(Shape *shape, Filter filter) {
             deque.push_back(s);
         Iterator *ita = s->createIterator();
         if (!ita->isDone()) {
-            for (auto ff : filterShape(s, filter)) {
-                deque.push_back(ff);
+            for (auto fs : filterShape(s, filter)) {
+                deque.push_back(fs);
             }
         }
     }

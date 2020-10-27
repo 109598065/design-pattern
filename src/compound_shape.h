@@ -48,26 +48,19 @@ public:
     }
 
     void deleteShapeById(std::string id) {
-        bool isFind = false;
-
         std::list<Shape *>::iterator it;
         for (it = _shapes.begin(); it != _shapes.end(); it++) {
             if ((*it)->id() == id) {
                 _shapes.erase(it);
-                isFind = true;
                 return;
             }
             try {
-                (*it)->deleteShapeById(id);
-                isFind = true;
+                return (*it)->deleteShapeById(id);
             }
             catch (std::string e) {
             }
         }
-
-        if (!isFind) {
-            throw std::string("Expected delete shape but shape not found");
-        }
+        throw std::string("Expected delete shape but shape not found");
     }
 
     Shape *getShapeById(std::string id) const {

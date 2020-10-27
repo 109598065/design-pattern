@@ -83,6 +83,16 @@ TEST_F(IteratorShould, NullIteratorForTriangle) {
     ASSERT_TRUE(it->isDone());
 }
 
+TEST_F(IteratorShould, NullIteratorExceptionWithRectangleCreate) {
+    try {
+        Iterator *iterator = rectangle->createIterator();
+        iterator->first();
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("No child member!", e);
+    }
+}
+
 TEST_F(IteratorShould, ShapeIteratorForCompoundShape) {
     Iterator *it = compoundShape->createIterator();
 
