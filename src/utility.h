@@ -1,107 +1,47 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-#include <deque>
-
-Shape *getShapeById(Shape *shape, std::string id) {
-    Iterator *it = shape->createIterator();
-
-    try {
-        it->first();
-    } catch (std::string e) {
-        throw std::string("Only compound shape can get shape!");
-    }
-
-    for (it->first(); !it->isDone(); it->next()) {
-        Shape *s = it->currentItem();
-        if (s->id() == id) {
-            return s;
-        }
-        Iterator *ita = s->createIterator();
-        if (!ita->isDone()) {
-            return getShapeById(s, id);
-        }
-    }
-
-    throw std::string("Expected get shape but shape not found");
-}
+#include "node.h"
+#include <queue>
 
 template<class Filter>
-std::deque<Shape *> filterShape(Shape *shape, Filter filter) {
-    std::deque<Shape *> deque;
+std::deque<Node*> filterNode(Node* node, Filter filter) {
+  std::deque<Node *> deque;
 
-    Iterator *it = shape->createIterator();
+    Iterator *it = node->createIterator();
 
     try {
         it->first();
     } catch (std::string e) {
-        throw std::string("Only compound shape can filter shape!");
+        throw std::string("Only folder can filter node!");
     }
 
     for (it->first(); !it->isDone(); it->next()) {
-        Shape *s = it->currentItem();
+        Node *s = it->currentItem();
         if (filter(s))
             deque.push_back(s);
         Iterator *ita = s->createIterator();
         if (!ita->isDone()) {
-            for (auto fs : filterShape(s, filter)) {
+            for (auto fs : filterNode(s, filter)) {
                 deque.push_back(fs);
             }
         }
     }
     return deque;
+    // access the node with iterator pattern.
+    // DO NOT use Type Checking or Dynamic Type that would violate OCP to implement the function.
+    // return the nodes under the input node tree sturctur that match the given filter.
+    // throw std::string "Only folder can filter node!" when the input node is not iterable.
 }
 
-class AreaFilter {
+class SizeFilter {
 public:
-    AreaFilter(double upperBound, double lowerBound) :
-            _upperBound(upperBound), _lowerBound(lowerBound) {}
-
-    bool operator()(Shape *shape) const {
-        return _lowerBound <= shape->area() && shape->area() <= _upperBound;
+    SizeFilter(double upperBound, double lowerBound) : _upperBound(upperBound), _lowerBound(lowerBound) {}
+    bool operator() (Node* node) const {
+      return _lowerBound <= node->size() && node->size() <= _upperBound;
     }
-
-private:
-    double _upperBound, _lowerBound;
-};
-
-class PerimeterFilter {
-public:
-    PerimeterFilter(double upperBound, double lowerBound) :
-            _upperBound(upperBound), _lowerBound(lowerBound) {}
-
-    bool operator()(Shape *shape) const {
-        return _lowerBound <= shape->perimeter() && shape->perimeter() <= _upperBound;
-    }
-
-private:
-    double _upperBound, _lowerBound;
-};
-
-class ColorFilter {
-public:
-    ColorFilter(std::string color) :
-            _color(color) {}
-
-    bool operator()(Shape *shape) const {
-        return shape->color() == _color;
-    }
-
-private:
-    std::string _color;
-};
-
-class TypeFilter {
-public:
-    TypeFilter(std::string type) :
-            _type(type) {}
-
-    bool operator()(Shape *shape) const {
-        return shape->type() == _type;
-    }
-
-private:
-    std::string _type;
+private :
+  double _upperBound,_lowerBound;
 };
 
 #endif
