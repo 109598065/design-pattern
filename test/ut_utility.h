@@ -1,112 +1,104 @@
-#include "../src/folder.h"
-#include "../src/app.h"
 #include "../src/utility.h"
 
-using namespace std;
-
-class UtlilityTestSuite: public testing::Test {
+class UtilityShould : public ::testing::Test {
 protected:
-    virtual void SetUp() {
-        chrome = new App("1", "chrome", 50.15);
-        facebook = new App("2", "facebook", 30.32);
-        instagram = new App("3", "instagram", 20.21);
-        youtube = new App("4", "youtube", 70.07);
-        ubereat = new App("5", "ubereat", 40.34);
-        line = new App("6", "line", 60.66);
+    void SetUp() override {
+        std::vector<TwoDimensionalCoordinate *> triangleVector;
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(3, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 4));
+        triangle_2 = new Triangle("2", triangleVector);
 
-        favorite = new Folder("7", "favorite");
-        common = new Folder("8", "common");
-        community = new Folder("9", "community");
-        trash = new Folder("10", "trash");
+        ellipse_3 = new Ellipse("3", 4, 3);
+        rectangle_4 = new Rectangle("4", 3, 4);
 
-        favorite->addNode(chrome);
-        favorite->addNode(facebook);
-        favorite->addNode(common);
-        common->addNode(instagram);
-        common->addNode(community);
-        common->addNode(youtube);
-        community->addNode(ubereat);
-        community->addNode(line);
-        community->addNode(trash);
+        shapes1.push_back(triangle_2);
+        compoundShape_1 = new CompoundShape("1", shapes1);
+        shapes0.push_back(compoundShape_1);
+        shapes0.push_back(ellipse_3);
+        shapes0.push_back(rectangle_4);
+        compoundShape_0 = new CompoundShape("0", shapes0);
     }
 
-    virtual void TearDown() {}
+    void TearDown() override {
+        delete compoundShape_0;
+        delete compoundShape_1;
+        delete triangle_2;
+        delete ellipse_3;
+        delete rectangle_4;
+    }
 
-    Node* chrome;
-    Node* facebook;
-    Node* instagram;
-    Node* youtube;
-    Node* ubereat;
-    Node* line;
-
-    Node* favorite;
-    Node* common;
-    Node* community;
-    Node* trash;
+    std::list<Shape *> shapes0;
+    std::list<Shape *> shapes1;
+    Shape *compoundShape_0;
+    Shape *compoundShape_1;
+    Shape *triangle_2;
+    Shape *ellipse_3;
+    Shape *rectangle_4;
 };
 
-TEST_F(UtlilityTestSuite, exception_for_app_filter_by_size) {
+TEST_F(UtilityShould, GetShapeById) {
+    ASSERT_EQ(triangle_2, getShapeById(compoundShape_0, "2"));
+}
+
+TEST_F(UtilityShould, ExceptionForShapeNotIterable) {
     try {
-        filterNode(chrome, SizeFilter(100, 1));
+        getShapeById(new Rectangle("0", 5, 4), "0");
         FAIL();
-    }catch(string e) {
-        ASSERT_EQ("Only folder can filter node!", e);
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can get shape!", e);
     }
 }
 
-TEST_F(UtlilityTestSuite, folder_filter_by_size_between_80_and_50) {
-    deque<Node *> nodes = filterNode(favorite, SizeFilter(80, 50));
-
-    ASSERT_EQ(3, nodes.size());
-    
-    EXPECT_EQ("1", nodes[0]->id());
-    EXPECT_DOUBLE_EQ(50.15, nodes[0]->size());
-
-    EXPECT_EQ("6", nodes[1]->id());
-    EXPECT_DOUBLE_EQ(60.66, nodes[1]->size());
-
-    EXPECT_EQ("4", nodes[2]->id());
-    EXPECT_DOUBLE_EQ(70.07, nodes[2]->size());
+TEST_F(UtilityShould, ExceptionForNotFindById) {
+    try {
+        getShapeById(compoundShape_0, "20");
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Expected get shape but shape not found", e);
+    }
 }
 
-TEST_F(UtlilityTestSuite, folder_filter_by_size_between_999_and_0) {
-    deque<Node *> nodes = filterNode(favorite, SizeFilter(999, 0));
-
-    ASSERT_EQ(9, nodes.size());
-
-    EXPECT_EQ("1", nodes[0]->id());
-    EXPECT_DOUBLE_EQ(50.15, nodes[0]->size());
-
-    EXPECT_EQ("2", nodes[1]->id());
-    EXPECT_DOUBLE_EQ(30.32, nodes[1]->size());
-
-    EXPECT_EQ("8", nodes[2]->id());
-    EXPECT_DOUBLE_EQ(191.28, nodes[2]->size());
-
-    EXPECT_EQ("3", nodes[3]->id());
-    EXPECT_DOUBLE_EQ(20.21, nodes[3]->size());
-
-    EXPECT_EQ("9", nodes[4]->id());
-    EXPECT_DOUBLE_EQ(101, nodes[4]->size());
-
-    EXPECT_EQ("5", nodes[5]->id());
-    EXPECT_DOUBLE_EQ(40.34, nodes[5]->size());
-
-    EXPECT_EQ("6", nodes[6]->id());
-    EXPECT_DOUBLE_EQ(60.66, nodes[6]->size());
-
-    EXPECT_EQ("10", nodes[7]->id());
-    EXPECT_DOUBLE_EQ(0, nodes[7]->size());
-
-    EXPECT_EQ("4", nodes[8]->id());
-    EXPECT_DOUBLE_EQ(70.07, nodes[8]->size());
+TEST_F(UtilityShould, FilterShapeWithAreaForLV1_TreeStruct) {
+    std::deque<Shape *> deque = filterShape(compoundShape_1, AreaFilter(10, 5));
+    ASSERT_EQ(1, deque.size());
+    ASSERT_EQ(triangle_2, deque.front());
 }
 
+TEST_F(UtilityShould, FilterShapeWithAreaForLV2_TreeStruct) {
+    std::deque<Shape *> deque = filterShape(compoundShape_0, AreaFilter(10, 5));
+    ASSERT_EQ(2, deque.size());
+    ASSERT_EQ(compoundShape_1, deque.front());
+    ASSERT_EQ(triangle_2, deque.back());
+}
 
-TEST_F(UtlilityTestSuite, folder_filter_by_size_equal_to_zero) {
-    deque<Node *> nodes = filterNode(favorite, SizeFilter(0, 0));
-    ASSERT_EQ(1, nodes.size());
+TEST_F(UtilityShould, FilterShapeWithPerimeter) {
+    std::deque<Shape *> deque = filterShape(compoundShape_0, PerimeterFilter(14, 12));
+    ASSERT_EQ(3, deque.size());
+    ASSERT_EQ(compoundShape_1, deque.at(0));
+    ASSERT_EQ(triangle_2, deque.at(1));
+    ASSERT_EQ(rectangle_4, deque.at(2));
+}
 
-    EXPECT_EQ("10", nodes[0]->id());
-    EXPECT_EQ(0, nodes[0]->size());
+TEST_F(UtilityShould, FilterShapeWithColor) {
+    std::deque<Shape *> deque = filterShape(compoundShape_0, ColorFilter("white"));
+    ASSERT_EQ(3, deque.size());
+    ASSERT_EQ(triangle_2, deque.at(0));
+    ASSERT_EQ(ellipse_3, deque.at(1));
+    ASSERT_EQ(rectangle_4, deque.at(2));
+}
+
+TEST_F(UtilityShould, FilterShapeWithType) {
+    std::deque<Shape *> deque = filterShape(compoundShape_0, TypeFilter("Compound Shape"));
+    ASSERT_EQ(1, deque.size());
+    ASSERT_EQ(compoundShape_1, deque.at(0));
+}
+
+TEST_F(UtilityShould, ExceptionForFileterShape) {
+    try {
+        filterShape(triangle_2, TypeFilter("Compound Shape"));
+        FAIL();
+    } catch (std::string e) {
+        ASSERT_EQ("Only compound shape can filter shape!", e);
+    }
 }
