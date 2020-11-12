@@ -5,8 +5,12 @@
 
 class AreaVisitor : public Visitor {
 public:
+    AreaVisitor() {
+        _area = 0.0;
+    }
+
     void visit(Ellipse *ellipse) {
-        _area = M_PI * ellipse->semiMajorAxes() * ellipse->semiMinorAxes();
+        _area += M_PI * ellipse->semiMajorAxes() * ellipse->semiMinorAxes();
     }
 
     void visit(Triangle *triangle) {
@@ -19,19 +23,17 @@ public:
         side3 = sqrt(pow(vectors.at(0)->getX() - vectors.at(2)->getX(), 2)
                      + pow(vectors.at(0)->getY() - vectors.at(2)->getY(), 2));
         double s = (side1 + side2 + side3) / 2;
-        _area = sqrt(s * (s - side1) * (s - side2) * (s - side3));
+        _area += sqrt(s * (s - side1) * (s - side2) * (s - side3));
     }
 
     void visit(Rectangle *rectangle) {
-        _area = rectangle->length() * rectangle->width();
+        _area += rectangle->length() * rectangle->width();
     }
 
     void visit(CompoundShape *compoundShape) {
-        _area = 0.0;
-        std::list<Shape *>::const_iterator it;
-        std::list<Shape *> shapes = compoundShape->shapes();
-        for (it = shapes.begin(); it != shapes.end(); it++) {
-            _area += (*it)->area();
+        Iterator *it = compoundShape->createIterator();
+        for (it->first(); !it->isDone(); it->next()) {
+            it->currentItem()->accept(this);
         }
     }
 
