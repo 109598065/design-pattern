@@ -10,15 +10,17 @@
 
 class ShapeBuilder {
 public:
-    ShapeBuilder() {}
+    ShapeBuilder() {
+        _uniqueId = 0;
+    }
 
     void buildRectangle(double length, double width) {
-        Shape *r = new Rectangle(std::string(), length, width);
+        Shape *r = new Rectangle(std::to_string(_uniqueId++), length, width);
         _pushdown.push(r);
     }
 
     void buildEllipse(double semiMajorAxes, double semiMinorAxes) {
-        Shape *r = new Ellipse(std::string(), semiMajorAxes, semiMinorAxes);
+        Shape *r = new Ellipse(std::to_string(_uniqueId++), semiMajorAxes, semiMinorAxes);
         _pushdown.push(r);
     }
 
@@ -27,17 +29,22 @@ public:
         triangleVector.push_back(new TwoDimensionalCoordinate(x1, y1));
         triangleVector.push_back(new TwoDimensionalCoordinate(x2, y2));
         triangleVector.push_back(new TwoDimensionalCoordinate(x3, y3));
-        Shape *r = new Triangle(std::string(), triangleVector);
+        Shape *r = new Triangle(std::to_string(_uniqueId++), triangleVector);
         _pushdown.push(r);
     }
 
     void buildCompoundShapeBegin() {
-        Shape *cs = new CompoundShape(std::string(), std::list<Shape *>());
+        Shape *cs = new CompoundShape(std::to_string(_uniqueId++), std::list<Shape *>());
         _pushdown.push(cs);
     }
 
     void buildCompoundShapeEnd() {
         std::vector<Shape *> v;
+
+        if (_pushdown.top()->area() == 0) {
+            _pushdown.pop();
+            return;
+        }
 
         while (!dynamic_cast<CompoundShape *>(_pushdown.top()) ||
                (dynamic_cast<CompoundShape *>(_pushdown.top()) && !_pushdown.top()->createIterator()->isDone())) {
@@ -61,6 +68,7 @@ public:
 
 private:
     std::stack<Shape *> _pushdown;
+    int _uniqueId;
 };
 
 #endif

@@ -36,7 +36,6 @@ TEST(ShapeBuilderTest, BuildCompoundShape) {
     std::deque<Shape *> result = sb.getResult();
     ASSERT_EQ(1, result.size());
     ASSERT_EQ(10, result[0]->area());
-
 }
 
 TEST(ShapeBuilderTest, BuildForest) {
@@ -62,3 +61,26 @@ TEST(ShapeBuilderTest, BuildForest) {
             result[1]->info());
     ASSERT_EQ("Triangle ([0.000, 0.000], [0.000, -3.000], [-4.000, 0.000])", result[2]->info());
 }
+
+TEST(ShapeBuilderTest, BuildShapesHaveUniqueId) {
+    ShapeBuilder sb;
+    sb.buildRectangle(2, 2);
+    sb.buildRectangle(2, 2);
+    sb.buildRectangle(2, 2);
+    std::deque<Shape *> results = sb.getResult();
+
+    ASSERT_EQ(3, results.size());
+    ASSERT_TRUE(results[0]->id() != results[1]->id());
+    ASSERT_TRUE(results[0]->id() != results[2]->id());
+    ASSERT_TRUE(results[1]->id() != results[2]->id());
+}
+
+TEST(ShapeBuilderTest, build_compoundShape_that_contains_a_empty_compoundShape) {
+    ShapeBuilder sb;
+    sb.buildCompoundShapeBegin();
+    sb.buildCompoundShapeEnd();
+    std::deque<Shape *> results = sb.getResult();
+
+    ASSERT_EQ(0, results.size());
+}
+

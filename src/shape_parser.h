@@ -9,8 +9,6 @@ public:
     ShapeParser(std::string input) {
         _scanner = new Scanner(input);
         _sb = new ShapeBuilder();
-        // initialize a scanner for handling input.
-        // initialize a shape builder for handling building shape.
     }
 
     void parser() {
@@ -25,58 +23,61 @@ public:
                 break;
             }
 
-            if (token == "Rectangle") {
-                _scanner->nextToken();
-                double argument1 = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                double argument2 = stod(_scanner->nextToken());
-
-                while (")" != _scanner->nextToken()) {
-                    isValid = false;
+            try {
+                if (token == "Rectangle") {
                     _scanner->nextToken();
-                }
-
-                if (isValid)
-                    _sb->buildRectangle(argument1, argument2);
-            } else if (token == "Ellipse") {
-                _scanner->nextToken();
-                double argument1 = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                double argument2 = stod(_scanner->nextToken());
-
-                while (")" != _scanner->nextToken()) {
-                    isValid = false;
+                    double argument1 = stod(_scanner->nextToken());
                     _scanner->nextToken();
-                }
+                    double argument2 = stod(_scanner->nextToken());
 
-                if (isValid)
-                    _sb->buildEllipse(argument1, argument2);
-            } else if (token == "Triangle") {
-                _scanner->nextToken();
-                double argument1 = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                double argument2 = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                double argument3 = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                double argument4 = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                double argument5 = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                double argument6 = stod(_scanner->nextToken());
+                    while (")" != _scanner->nextToken()) {
+                        isValid = false;
+                        _scanner->nextToken();
+                    }
 
-                while (")" != _scanner->nextToken()) {
-                    isValid = false;
+                    if (isValid)
+                        _sb->buildRectangle(argument1, argument2);
+                } else if (token == "Ellipse") {
                     _scanner->nextToken();
-                }
+                    double argument1 = stod(_scanner->nextToken());
+                    _scanner->nextToken();
+                    double argument2 = stod(_scanner->nextToken());
 
-                if (isValid)
-                    _sb->buildTriangle(argument1, argument2, argument3, argument4, argument5, argument6);
-            } else if (token == "CompoundShape") {
-                _scanner->nextToken();
-                _sb->buildCompoundShapeBegin();
-            } else if (token == "}") {
-                _sb->buildCompoundShapeEnd();
+                    while (")" != _scanner->nextToken()) {
+                        isValid = false;
+                        _scanner->nextToken();
+                    }
+
+                    if (isValid)
+                        _sb->buildEllipse(argument1, argument2);
+                } else if (token == "Triangle") {
+                    _scanner->nextToken();
+                    double argument1 = stod(_scanner->nextToken());
+                    _scanner->nextToken();
+                    double argument2 = stod(_scanner->nextToken());
+                    _scanner->nextToken();
+                    double argument3 = stod(_scanner->nextToken());
+                    _scanner->nextToken();
+                    double argument4 = stod(_scanner->nextToken());
+                    _scanner->nextToken();
+                    double argument5 = stod(_scanner->nextToken());
+                    _scanner->nextToken();
+                    double argument6 = stod(_scanner->nextToken());
+
+                    while (")" != _scanner->nextToken()) {
+                        isValid = false;
+                        _scanner->nextToken();
+                    }
+
+                    if (isValid)
+                        _sb->buildTriangle(argument1, argument2, argument3, argument4, argument5, argument6);
+                } else if (token == "CompoundShape") {
+                    _scanner->nextToken();
+                    _sb->buildCompoundShapeBegin();
+                } else if (token == "}") {
+                    _sb->buildCompoundShapeEnd();
+                }
+            } catch (std::string e) {
             }
         }
     }
