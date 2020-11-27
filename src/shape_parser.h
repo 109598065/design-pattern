@@ -26,10 +26,10 @@ public:
             try {
                 if (token == "Rectangle") {
                     _scanner->nextToken();
-                    double argument1 = stod(_scanner->nextToken());
+                    double argument1 = stringToDoubleCanTryCatch(_scanner->nextToken());
                     _scanner->nextToken();
-                    double argument2 = stod(_scanner->nextToken());
-
+                    double argument2 = stringToDoubleCanTryCatch(_scanner->nextToken());
+                    
                     while (")" != _scanner->nextToken()) {
                         isValid = false;
                         _scanner->nextToken();
@@ -39,9 +39,9 @@ public:
                         _sb->buildRectangle(argument1, argument2);
                 } else if (token == "Ellipse") {
                     _scanner->nextToken();
-                    double argument1 = stod(_scanner->nextToken());
+                    double argument1 = stringToDoubleCanTryCatch(_scanner->nextToken());
                     _scanner->nextToken();
-                    double argument2 = stod(_scanner->nextToken());
+                    double argument2 = stringToDoubleCanTryCatch(_scanner->nextToken());
 
                     while (")" != _scanner->nextToken()) {
                         isValid = false;
@@ -52,17 +52,17 @@ public:
                         _sb->buildEllipse(argument1, argument2);
                 } else if (token == "Triangle") {
                     _scanner->nextToken();
-                    double argument1 = stod(_scanner->nextToken());
+                    double argument1 = stringToDoubleCanTryCatch(_scanner->nextToken());
                     _scanner->nextToken();
-                    double argument2 = stod(_scanner->nextToken());
+                    double argument2 = stringToDoubleCanTryCatch(_scanner->nextToken());
                     _scanner->nextToken();
-                    double argument3 = stod(_scanner->nextToken());
+                    double argument3 = stringToDoubleCanTryCatch(_scanner->nextToken());
                     _scanner->nextToken();
-                    double argument4 = stod(_scanner->nextToken());
+                    double argument4 = stringToDoubleCanTryCatch(_scanner->nextToken());
                     _scanner->nextToken();
-                    double argument5 = stod(_scanner->nextToken());
+                    double argument5 = stringToDoubleCanTryCatch(_scanner->nextToken());
                     _scanner->nextToken();
-                    double argument6 = stod(_scanner->nextToken());
+                    double argument6 = stringToDoubleCanTryCatch(_scanner->nextToken());
 
                     while (")" != _scanner->nextToken()) {
                         isValid = false;
@@ -89,6 +89,13 @@ public:
 private:
     Scanner *_scanner;
     ShapeBuilder *_sb;
+
+    double stringToDoubleCanTryCatch(std::string str) {
+        std::istringstream iss(str);
+        double result;
+        iss >> result;
+        return result;
+    }
 };
 
 #endif

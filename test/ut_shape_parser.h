@@ -11,7 +11,7 @@ TEST(ShapeParserTest, parser_rectangle) {
 }
 
 TEST(ShapeParserTest, parser_one_shape_contain_invalid_argument_that_should_be_ignored) {
-    ShapeParser sp("Rectangle (4.000, 3.000, 7.000), Rectangle (4.000, 3.a00)");
+    ShapeParser sp("Rectangle (4.000, 3.000, 7.000), Rectangle (4.000, a)");
     sp.parser();
 
     std::deque<Shape *> results = sp.getResult();
