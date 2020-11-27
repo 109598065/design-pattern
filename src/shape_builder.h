@@ -41,11 +41,6 @@ public:
     void buildCompoundShapeEnd() {
         std::vector<Shape *> v;
 
-        if (_pushdown.top()->area() == 0) {
-            _pushdown.pop();
-            return;
-        }
-
         while (!dynamic_cast<CompoundShape *>(_pushdown.top()) ||
                (dynamic_cast<CompoundShape *>(_pushdown.top()) && !_pushdown.top()->createIterator()->isDone())) {
             v.push_back(_pushdown.top());

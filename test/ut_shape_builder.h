@@ -75,12 +75,24 @@ TEST(ShapeBuilderTest, BuildShapesHaveUniqueId) {
     ASSERT_TRUE(results[1]->id() != results[2]->id());
 }
 
-TEST(ShapeBuilderTest, build_compoundShape_that_contains_a_empty_compoundShape) {
+TEST(ShapeBuilderTest, build_empty_compoundShape) {
     ShapeBuilder sb;
     sb.buildCompoundShapeBegin();
     sb.buildCompoundShapeEnd();
     std::deque<Shape *> results = sb.getResult();
 
-    ASSERT_EQ(0, results.size());
+    ASSERT_EQ(1, results.size());
+}
+
+TEST(ShapeBuilderTest, build_compoundShape_that_contains_a_empty_compoundShape) {
+    ShapeBuilder sb;
+    sb.buildCompoundShapeBegin();
+    sb.buildCompoundShapeBegin();
+    sb.buildCompoundShapeEnd();
+    sb.buildCompoundShapeEnd();
+    std::deque<Shape *> results = sb.getResult();
+
+    ASSERT_EQ(1, results.size());
+    ASSERT_EQ("Compound Shape {Compound Shape {}}", results[0]->info());
 }
 
