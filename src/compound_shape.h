@@ -8,9 +8,9 @@
 class CompoundShape : public Shape {
 public:
     CompoundShape(std::string id, std::list<Shape *> shapes) : Shape(id, "transparent") {
-        if (shapes.empty()) {
-            throw std::string("This is not a compound shape!");
-        }
+//        if (shapes.empty()) {
+//            throw std::string("This is not a compound shape!");
+//        }
         _shapes = shapes;
     }
 

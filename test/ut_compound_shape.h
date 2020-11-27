@@ -59,15 +59,15 @@ TEST_F(CompoundShapeShould, ColorWithDefault) {
     ASSERT_EQ("transparent", compoundShape->color());
 }
 
-TEST_F(CompoundShapeShould, ExceptionForNoShapeInVector) {
-    try {
-        std::list<Shape *> EmptyShapes;
-        Shape *compoundShape = new CompoundShape(std::string(), EmptyShapes);
-        FAIL();
-    } catch (std::string e) {
-        ASSERT_EQ("This is not a compound shape!", e);
-    }
-}
+//TEST_F(CompoundShapeShould, ExceptionForNoShapeInVector) {
+//    try {
+//        std::list<Shape *> EmptyShapes;
+//        Shape *compoundShape = new CompoundShape(std::string(), EmptyShapes);
+//        FAIL();
+//    } catch (std::string e) {
+//        ASSERT_EQ("This is not a compound shape!", e);
+//    }
+//}
 
 TEST_F(CompoundShapeShould, AddNoncompoundShape) {
     Shape *compoundShape = new CompoundShape(std::string(), shapes);
