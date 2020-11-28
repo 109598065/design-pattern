@@ -90,10 +90,6 @@ public:
         visitor->visit(this);
     }
 
-    std::list<Shape *> shapes() {
-        return _shapes;
-    }
-
 private:
     std::list<Shape *> _shapes;
 };

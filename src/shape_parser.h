@@ -23,61 +23,54 @@ public:
                 break;
             }
 
-            try {
-                if (token == "Rectangle") {
-                    _scanner->nextToken();
-                    double argument1 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    _scanner->nextToken();
-                    double argument2 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    
-                    while (")" != _scanner->nextToken()) {
-                        isValid = false;
-                        _scanner->nextToken();
-                    }
+            std::vector<std::string> vector;
+            std::string temp;
 
-                    if (isValid)
+            if (token == "Rectangle") {
+                if ("(" == _scanner->nextToken()) {
+                    while (")" != (temp = _scanner->nextToken())) {
+                        if ("," != temp)
+                            vector.push_back(temp);
+                    }
+                    if (vector.size() == 2) {
+                        double argument1 = stod(vector[0]);
+                        double argument2 = stod(vector[1]);
                         _sb->buildRectangle(argument1, argument2);
-                } else if (token == "Ellipse") {
-                    _scanner->nextToken();
-                    double argument1 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    _scanner->nextToken();
-                    double argument2 = stringToDoubleCanTryCatch(_scanner->nextToken());
-
-                    while (")" != _scanner->nextToken()) {
-                        isValid = false;
-                        _scanner->nextToken();
                     }
-
-                    if (isValid)
-                        _sb->buildEllipse(argument1, argument2);
-                } else if (token == "Triangle") {
-                    _scanner->nextToken();
-                    double argument1 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    _scanner->nextToken();
-                    double argument2 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    _scanner->nextToken();
-                    double argument3 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    _scanner->nextToken();
-                    double argument4 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    _scanner->nextToken();
-                    double argument5 = stringToDoubleCanTryCatch(_scanner->nextToken());
-                    _scanner->nextToken();
-                    double argument6 = stringToDoubleCanTryCatch(_scanner->nextToken());
-
-                    while (")" != _scanner->nextToken()) {
-                        isValid = false;
-                        _scanner->nextToken();
-                    }
-
-                    if (isValid)
-                        _sb->buildTriangle(argument1, argument2, argument3, argument4, argument5, argument6);
-                } else if (token == "CompoundShape") {
-                    _scanner->nextToken();
-                    _sb->buildCompoundShapeBegin();
-                } else if (token == "}") {
-                    _sb->buildCompoundShapeEnd();
                 }
-            } catch (std::string e) {
+            } else if (token == "Ellipse") {
+                if ("(" == _scanner->nextToken()) {
+                    while (")" != (temp = _scanner->nextToken())) {
+                        if ("," != temp)
+                            vector.push_back(temp);
+                    }
+                    if (vector.size() == 2) {
+                        double argument1 = stod(vector[0]);
+                        double argument2 = stod(vector[1]);
+                        _sb->buildEllipse(argument1, argument2);
+                    }
+                }
+            } else if (token == "Triangle") {
+                if ("(" == _scanner->nextToken()) {
+                    while (")" != (temp = _scanner->nextToken())) {
+                        if ("," != temp)
+                            vector.push_back(temp);
+                    }
+                    if (vector.size() == 6) {
+                        double argument1 = stod(vector[0]);
+                        double argument2 = stod(vector[1]);
+                        double argument3 = stod(vector[2]);
+                        double argument4 = stod(vector[3]);
+                        double argument5 = stod(vector[4]);
+                        double argument6 = stod(vector[5]);
+                        _sb->buildTriangle(argument1, argument2, argument3, argument4, argument5, argument6);
+                    }
+                }
+            } else if (token == "CompoundShape") {
+                _scanner->nextToken();
+                _sb->buildCompoundShapeBegin();
+            } else if (token == "}") {
+                _sb->buildCompoundShapeEnd();
             }
         }
     }
@@ -90,12 +83,12 @@ private:
     Scanner *_scanner;
     ShapeBuilder *_sb;
 
-    double stringToDoubleCanTryCatch(std::string str) {
-        std::istringstream iss(str);
-        double result;
-        iss >> result;
-        return result;
-    }
+//    double stringToDoubleCanTryCatch(std::string str) {
+//        std::istringstream iss(str);
+//        double result;
+//        iss >> result;
+//        return result;
+//    }
 };
 
 #endif

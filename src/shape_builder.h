@@ -35,17 +35,30 @@ public:
 
     void buildCompoundShapeBegin() {
         Shape *cs = new CompoundShape(std::to_string(_uniqueId++), std::list<Shape *>());
-        _pushdown.push(cs);
+        isEmpty = false;
+        if (!_pushdown.empty() && dynamic_cast<CompoundShape *>(_pushdown.top())) {
+            _pushdown.top()->addShape(cs);
+            isEmpty = true;
+        } else
+            _pushdown.push(cs);
     }
 
     void buildCompoundShapeEnd() {
         std::vector<Shape *> v;
 
-        while (!dynamic_cast<CompoundShape *>(_pushdown.top()) ||
-               (dynamic_cast<CompoundShape *>(_pushdown.top()) && !_pushdown.top()->createIterator()->isDone())) {
+        while (!isEmpty && (!dynamic_cast<CompoundShape *>(_pushdown.top()) ||
+                            (dynamic_cast<CompoundShape *>(_pushdown.top()) &&
+                             !_pushdown.top()->createIterator()->isDone()))) {
             v.push_back(_pushdown.top());
             _pushdown.pop();
         }
+
+//        while (!dynamic_cast<CompoundShape *>(_pushdown.top()) ||
+//               (dynamic_cast<CompoundShape *>(_pushdown.top()) && !_pushdown.top()->createIterator()->isDone())) {
+//            v.push_back(_pushdown.top());
+//            _pushdown.pop();
+//        }
+
         for (auto it = v.rbegin(); it != v.rend(); it++) {
             _pushdown.top()->addShape(*it);
         }
@@ -64,6 +77,7 @@ public:
 private:
     std::stack<Shape *> _pushdown;
     int _uniqueId;
+    bool isEmpty;
 };
 
 #endif

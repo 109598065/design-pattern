@@ -82,17 +82,39 @@ TEST(ShapeBuilderTest, build_empty_compoundShape) {
     std::deque<Shape *> results = sb.getResult();
 
     ASSERT_EQ(1, results.size());
+    ASSERT_EQ("Compound Shape {}", results[0]->info());
+    ASSERT_EQ(0, results[0]->area());
+    ASSERT_TRUE(results[0]->createIterator()->isDone());
 }
 
-//TEST(ShapeBuilderTest, build_compoundShape_that_contains_a_empty_compoundShape) {
-//    ShapeBuilder sb;
-//    sb.buildCompoundShapeBegin();
-//    sb.buildCompoundShapeBegin();
-//    sb.buildCompoundShapeEnd();
-//    sb.buildCompoundShapeEnd();
-//    std::deque<Shape *> results = sb.getResult();
-//
-//    ASSERT_EQ(1, results.size());
-//    ASSERT_EQ("Compound Shape {Compound Shape {}}", results[0]->info());
-//}
-//
+TEST(ShapeBuilderTest, compoundShapeProperty) {
+    Shape *compoundShape = new CompoundShape(std::string(), std::list<Shape *>());//
+    ASSERT_EQ("Compound Shape {}", compoundShape->info());
+    ASSERT_TRUE(compoundShape->createIterator()->isDone());
+    ASSERT_EQ(nullptr, compoundShape->createIterator()->currentItem());
+
+    Shape *toAddCompoundShape = new CompoundShape(std::string(), std::list<Shape *>());
+    compoundShape->addShape(toAddCompoundShape);
+
+    ASSERT_EQ("Compound Shape {Compound Shape {}}", compoundShape->info());
+    ASSERT_EQ(0, compoundShape->area());
+    ASSERT_FALSE(compoundShape->createIterator()->isDone());
+
+    ASSERT_EQ(toAddCompoundShape, compoundShape->createIterator()->currentItem());//
+    ASSERT_EQ("Compound Shape {}", compoundShape->createIterator()->currentItem()->info());
+    ASSERT_EQ(0, compoundShape->createIterator()->currentItem()->area());
+    ASSERT_TRUE(compoundShape->createIterator()->currentItem()->createIterator()->isDone());
+    ASSERT_EQ(nullptr, compoundShape->createIterator()->currentItem()->createIterator()->currentItem());
+}
+
+TEST(ShapeBuilderTest, build_compoundShape_that_contains_a_empty_compoundShape) {
+    ShapeBuilder sb;
+    sb.buildCompoundShapeBegin();
+    sb.buildCompoundShapeBegin();
+    sb.buildCompoundShapeEnd();
+    sb.buildCompoundShapeEnd();
+    std::deque<Shape *> results = sb.getResult();
+
+    ASSERT_EQ(1, results.size());
+    ASSERT_EQ("Compound Shape {Compound Shape {}}", results[0]->info());
+}
