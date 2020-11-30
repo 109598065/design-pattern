@@ -95,12 +95,12 @@ TEST(ShapeParserTest, parser_forest) {
     ASSERT_EQ("Triangle ([0.000, 0.000], [0.000, -3.000], [-4.000, 0.000])", results[2]->info());
 }
 
-//TEST(ShapeParserTest, parser_compoundShape_that_contains_a_empty_compoundShape) {
-//    ShapeParser sp("CompoundShape { Ellipse (4.000, 3.000), CompoundShape {}}");
-//    sp.parser();
-//
-//    std::deque<Shape *> results = sp.getResult();
-//
-//    ASSERT_EQ(1, results.size());
-//    ASSERT_EQ("Compound Shape {Ellipse (4.000, 3.000)}", results[0]->info());
-//}
+TEST(ShapeParserTest, parser_compoundShape_that_contains_a_empty_compoundShape) {
+    ShapeParser sp("CompoundShape { Ellipse (4.000, 3.000), CompoundShape {}}");
+    sp.parser();
+
+    std::deque<Shape *> results = sp.getResult();
+
+    ASSERT_EQ(1, results.size());
+    ASSERT_EQ("Compound Shape {Ellipse (4.000, 3.000), Compound Shape {}}", results[0]->info());
+}

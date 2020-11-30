@@ -118,3 +118,17 @@ TEST(ShapeBuilderTest, build_compoundShape_that_contains_a_empty_compoundShape) 
     ASSERT_EQ(1, results.size());
     ASSERT_EQ("Compound Shape {Compound Shape {}}", results[0]->info());
 }
+
+TEST(ShapeBuilderTest, build_compoundShape_that_contains_multi_simple_shapes_and_a_empty_compoundShape) {
+    ShapeBuilder sb;
+    sb.buildCompoundShapeBegin();
+    sb.buildRectangle(2,2);
+    sb.buildEllipse(2,2);
+    sb.buildCompoundShapeBegin();
+    sb.buildCompoundShapeEnd();
+    sb.buildCompoundShapeEnd();
+    std::deque<Shape *> results = sb.getResult();
+
+    ASSERT_EQ(1, results.size());
+    ASSERT_EQ("Compound Shape {Rectangle (2.000, 2.000), Ellipse (2.000, 2.000), Compound Shape {}}", results[0]->info());
+}

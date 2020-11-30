@@ -15,7 +15,6 @@ public:
 
         while (1) {
             std::string token;
-            bool isValid = true;
 
             try {
                 token = _scanner->nextToken();
@@ -82,13 +81,6 @@ public:
 private:
     Scanner *_scanner;
     ShapeBuilder *_sb;
-
-//    double stringToDoubleCanTryCatch(std::string str) {
-//        std::istringstream iss(str);
-//        double result;
-//        iss >> result;
-//        return result;
-//    }
 };
 
 #endif
