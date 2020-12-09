@@ -83,6 +83,21 @@ public:
     return new NodeIterator<std::list<Node *>::const_iterator>(_nodes.begin(), _nodes.end());
   }
 
+  void accept(Visitor *visitor)
+  {
+    visitor->visitFolder(this);
+  }
+
+  void addNodes(std::list<Node *> nodes)
+  {
+    std::list<Node *>::const_iterator it;
+    for (it = nodes.begin(); it != nodes.end(); it++)
+    {
+       (*it)->updatePath(route());
+       _nodes.push_back(*it);
+    }
+  }
+
 private:
   std::list<Node *> _nodes;
 };

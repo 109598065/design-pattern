@@ -2,7 +2,9 @@
 #define NODE_H
 
 #include <string>
+#include <list>
 #include "./null_iterator.h"
+#include "./visitor.h"
 
 class Node
 {
@@ -28,6 +30,11 @@ public:
         virtual Iterator *createIterator() const;
 
         virtual ~Node();
+
+        virtual void addNodes(std::list<Node*> nodes);
+  
+        virtual void accept(Visitor* visitor) = 0;
+
 
 private:
         std::string _id, _name, _path;

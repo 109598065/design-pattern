@@ -51,3 +51,7 @@ Iterator *Node::createIterator() const
 }
 
 Node::~Node() {}
+
+void Node::addNodes(std::list<Node*> nodes){
+  throw std::string("only folder can add nodes.");
+}
