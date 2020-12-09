@@ -19,29 +19,37 @@ public:
         while (1)
         {
             std::string token, temp;
+            int state = 0;
             try
             {
                 token = _scanner->nextToken();
-                if(token == "}")
+                if (token == "}")
+                {
                     _sb->buildFolderEnd();
+                    state = 0;
+                }
 
+                if ("(" == (temp = _scanner->nextToken()))
+                {
+                    double size = stod(_scanner->nextToken());
+                    _scanner->nextToken();
+                    _sb->buildApp(token, size);
+                }
+                else if ("{" == temp)
+                {
+                    _sb->buildFolderBegin(token);
+                    state = 1;
+                }
+
+                if (state == 1)
+                {
+                    if ("}" == _scanner->nextToken())
+                        _sb->buildFolderEnd();
+                }
             }
             catch (std::string e)
             {
                 break;
-            }
-            
-
-
-            if ("(" == (temp = _scanner->nextToken()))
-            {
-                double size = stod(_scanner->nextToken());
-                _scanner->nextToken();
-                _sb->buildApp(token, size);
-            }
-            else if ("{" == temp)
-            {
-                _sb->buildFolderBegin(token);
             }
         }
     }
