@@ -1,9 +1,10 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
-class Shape;
+class Node;
 
-class Iterator {
+class Iterator
+{
 public:
     virtual void first() = 0;
 
@@ -11,7 +12,7 @@ public:
 
     virtual bool isDone() const = 0;
 
-    virtual Shape *currentItem() const = 0;
+    virtual Node *currentItem() const = 0;
 };
 
 #endif
