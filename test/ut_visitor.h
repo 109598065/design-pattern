@@ -1,122 +1,93 @@
-#include <gtest/gtest.h>
-#include "../src/folder.h"
-#include "../src/app.h"
-#include "../src/find_visitor.h"
+#include "../src/rectangle.h"
+#include "../src/ellipse.h"
+#include "../src/triangle.h"
+#include "../src/compound_shape.h"
+#include "../src/area_visitor.h"
+#include "../src/info_visitor.h"
 
-using namespace std;
-//30%
-class VisitorTestSuite: public testing::Test {
+class VisitorShould : public ::testing::Test {
 protected:
-    virtual void SetUp() {
-        favorite = new Folder("1", "favorite");
-        community = new Folder("2", "community");
-        common = new Folder("3", "common");
-        trash = new Folder("4", "trash");
-        others_in_community = new Folder("5", "others");
-        favorite_in_common = new Folder("6", "favorite");
+    void SetUp() override {
+        std::vector<TwoDimensionalCoordinate *> triangleVector;
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(3, 0));
+        triangleVector.push_back(new TwoDimensionalCoordinate(0, 4));
+        triangle_2 = new Triangle("2", triangleVector);
 
-        favorite->addNodes({
-            new App("7", "instagram", 20.21),
-            community,
-            new App("8", "youtube", 70.07),
-            common
-        });
+        ellipse_3 = new Ellipse("3", 4, 3);
+        rectangle_4 = new Rectangle("4", 3, 4);
 
-        community->addNodes({
-            new App("9", "facebook", 30.32),
-            new App("10", "instagram", 20.21),
-            new Folder("11", "favorite"),
-            others_in_community
-        });
-
-        common->addNodes({
-            new App("12", "instagram", 20.21),
-            new App("13", "line", 60.66),
-            favorite_in_common,
-            new App("14", "twitter", 40.05)
-        });
-
-        others_in_community->addNodes({
-            new App("15", "twitter", 40.05)
-        });
-
-        favorite_in_common->addNodes({
-            new Folder("16", "others")
-        });
+        shapes1.push_back(triangle_2);
+        compoundShape_1 = new CompoundShape("1", shapes1);
+        shapes0.push_back(compoundShape_1);
+        shapes0.push_back(ellipse_3);
+        shapes0.push_back(rectangle_4);
+        compoundShape_0 = new CompoundShape("0", shapes0);
     }
 
-    Node* favorite;
-    Node* community;
-    Node* common;
-    Node* trash;
+    void TearDown() override {
+        delete compoundShape_0;
+        delete compoundShape_1;
+        delete triangle_2;
+        delete ellipse_3;
+        delete rectangle_4;
+    }
 
-    Node* favorite_in_common;
-    Node* others_in_community;
+    std::list<Shape *> shapes0;
+    std::list<Shape *> shapes1;
+    Shape *compoundShape_0;
+    Shape *compoundShape_1;
+    Shape *triangle_2;
+    Shape *ellipse_3;
+    Shape *rectangle_4;
 };
 
-//2%
-TEST(VisitorTest, find_app) {
-    Node *ubereat = new App("1", "ubereat", 40.34);
-    FindVisitor* fv = new FindVisitor("ubereat");
-    ubereat->accept(fv);
-
-    ASSERT_EQ("/ubereat", fv->getResult());
+TEST_F(VisitorShould, AreaVisitorEllipse) {
+    AreaVisitor areaVisitor;
+    ellipse_3->accept(&areaVisitor);
+    ASSERT_EQ(37.699111843077517, areaVisitor.area());
 }
 
-//2%
-TEST(VisitorTest, find_folder) {
-    Node *game = new Folder("1", "game");
-
-    FindVisitor* fv = new FindVisitor("game");
-    game->accept(fv);
-
-    ASSERT_EQ("/game", fv->getResult());
+TEST_F(VisitorShould, AreaVisitorTriangle) {
+    AreaVisitor areaVisitor;
+    triangle_2->accept(&areaVisitor);
+    ASSERT_EQ(6, areaVisitor.area());
 }
 
-//3%
-TEST_F(VisitorTestSuite, find_app_in_folder) {
-    FindVisitor* fv = new FindVisitor("youtube");
-    favorite->accept(fv);
-
-    ASSERT_EQ("/favorite/youtube", fv->getResult());
+TEST_F(VisitorShould, AreaVisitorRectangle) {
+    AreaVisitor areaVisitor;
+    rectangle_4->accept(&areaVisitor);
+    ASSERT_EQ(12, areaVisitor.area());
 }
 
-//3%
-TEST_F(VisitorTestSuite, find_folder_in_folder) {
-    FindVisitor* fv = new FindVisitor("community");
-    favorite->accept(fv);
-
-    ASSERT_EQ("/favorite/community", fv->getResult());
+TEST_F(VisitorShould, AreaVisitorCompoundShape) {
+    AreaVisitor areaVisitor;
+    compoundShape_0->accept(&areaVisitor);
+    ASSERT_DOUBLE_EQ(55.699111843077517, areaVisitor.area());
 }
 
-//5%
-TEST_F(VisitorTestSuite, find_node_in_tree_structure_1) {
-    FindVisitor* fv = new FindVisitor("instagram");
-    favorite->accept(fv);
-
-    ASSERT_EQ("/favorite/instagram\n/favorite/community/instagram\n/favorite/common/instagram", fv->getResult());
+TEST_F(VisitorShould, InfoVisitorEllipse) {
+    InfoVisitor areaVisitor;
+    ellipse_3->accept(&areaVisitor);
+    ASSERT_EQ("Ellipse (4.000, 3.000)", areaVisitor.info());
 }
 
-//5%
-TEST_F(VisitorTestSuite, find_node_in_tree_structure_2) {
-    FindVisitor* fv = new FindVisitor("twitter");
-    favorite->accept(fv);
-
-    ASSERT_EQ("/favorite/community/others/twitter\n/favorite/common/twitter", fv->getResult());
+TEST_F(VisitorShould, InfoVisitorTriangle) {
+    InfoVisitor areaVisitor;
+    triangle_2->accept(&areaVisitor);
+    ASSERT_EQ("Triangle ([0.000, 0.000], [3.000, 0.000], [0.000, 4.000])", areaVisitor.info());
 }
 
-//5%
-TEST_F(VisitorTestSuite, find_node_in_tree_structure_3) {
-    FindVisitor* fv = new FindVisitor("others");
-    favorite->accept(fv);
-
-    ASSERT_EQ("/favorite/community/others\n/favorite/common/favorite/others", fv->getResult());
+TEST_F(VisitorShould, InfoVisitorRectangle) {
+    InfoVisitor areaVisitor;
+    rectangle_4->accept(&areaVisitor);
+    ASSERT_EQ("Rectangle (3.000, 4.000)", areaVisitor.info());
 }
 
-//5%
-TEST_F(VisitorTestSuite, find_node_in_tree_structure_4) {
-    FindVisitor* fv = new FindVisitor("favorite");
-    favorite->accept(fv);
-
-    ASSERT_EQ("/favorite\n/favorite/community/favorite\n/favorite/common/favorite", fv->getResult());
+TEST_F(VisitorShould, InfoVisitorCompoundShape) {
+    InfoVisitor areaVisitor;
+    compoundShape_0->accept(&areaVisitor);
+    ASSERT_EQ(
+            "Compound Shape {Compound Shape {Triangle ([0.000, 0.000], [3.000, 0.000], [0.000, 4.000])}, Ellipse (4.000, 3.000), Rectangle (3.000, 4.000)}",
+            areaVisitor.info());
 }
