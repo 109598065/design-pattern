@@ -4,8 +4,8 @@
 TEST(FilterShould, FilterNormalShape) {
     Shape *r22 = new Rectangle(std::string(), 4, 4);
     r22->setColor("black");
-    Shape *r66 = new Rectangle(std::string(), 5, 5);
-    std::list<Shape *> data = {r22, r66};
+    Shape *r55 = new Rectangle(std::string(), 5, 5);
+    std::list<Shape *> data = {r22, r55};
 
     Filter *areaFilter = new ShapeFilter([](Shape *shape) { return shape->area() <= 30; });
     Filter *perimeterFilter = new ShapeFilter([](Shape *shape) { return shape->perimeter() >= 15; });

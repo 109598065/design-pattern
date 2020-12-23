@@ -18,14 +18,15 @@ public:
 
     std::list<Shape *> push(std::list<Shape *> shapes) {
         std::list<Shape *>::const_iterator it;
+        std::list<Shape *> list;
         for (it = shapes.begin(); it != shapes.end(); it++) {
-            if (!_pred(*it)) {
-                it = shapes.erase(it);
+            if (_pred(*it)) {
+                list.push_back(*it);
             }
         }
         if (_next)
-            return _next->push(shapes);
-        return shapes;
+            return _next->push(list);
+        return list;
     }
 
 private:
